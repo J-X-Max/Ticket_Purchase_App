@@ -53,7 +53,7 @@
 <script setup lang="ts">
 import Myheader from '@/components/Myheader.vue';
 import { http } from '@/util/tools.ts'
-import { onMounted, ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue'
+import { ref, computed, onBeforeMount, onBeforeUnmount, watch } from 'vue'
 import _ from 'lodash'
 import { Icon as VanIcon, IndexBar as vanIndexBar, IndexAnchor as vanIndexAnchor, Cell as vanCell } from 'vant';
 import useCityStore from '../store/cityStore.ts'

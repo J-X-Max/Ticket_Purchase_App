@@ -292,7 +292,7 @@ const submit = async () => {
         "x-token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhZ2VudElkIjoiMzAwMCIsInRpbWVzdGFtcCI6MTc3NDIwMzY3OCwidXNlcklkIjozMTk0MjU4N30.TpsHHuNAjDKS88YQBSyGY0ebuFTzQwtORkCVnNmAnp8"
       }
     })
-    const res2 = await http.get('/gateway/',
+     await http.get('/gateway/',
       {
         params: {
           orderId: res1.data.data.payOrderId,

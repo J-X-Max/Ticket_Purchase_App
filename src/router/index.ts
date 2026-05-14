@@ -207,7 +207,7 @@ const routes = [
 
 const router = createRouter({
   // history: createWebHashHistory(), // hash  #/film #/center
-  history: createWebHistory(), // 
+  history: createWebHistory('/Ticket_Purchase_App/'), // 
   // history /film /center
   routes, // `routes: routes` 的缩写
 

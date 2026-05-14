@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
-import path from 'path' 
+import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
+  base: './',   // 关键！所有资源用相对路径，适配任何部署子目录
   plugins: [vue()],
-    css: {
+  css: {
     preprocessorOptions: {
       scss: {
         // 这里注入你的全局变量文件。
@@ -20,7 +21,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, 'src')
     }
   },
-   server: {
+  server: {
     proxy: {
       '/geocoder': {
         target: 'https://apis.map.qq.com/ws',
@@ -30,4 +31,3 @@ export default defineConfig({
     }
   }
 })
- 

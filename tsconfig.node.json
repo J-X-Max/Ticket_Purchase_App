@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.node.tsbuildinfo",//指定增量编译信息的缓存文件存放位置。.tsbuildinfo 文件存储了上一次编译的结构信息，让 vue-tsc -b 只检查发生变动的文件，大幅提升速度。
+    "target": "ES2023",
+    "lib": ["ES2023"],
+    "module": "ESNext",//指定模块系统。ESNext 表示输出 import/export 语法，由打包器 (Vite) 进一步处理。
+    "types": ["node"],//加载额外的类型声明包。node 让 Node API 有类型；vite/client 提供了 import.meta.env 等 Vite 特有功能的类型提示。
+    "skipLibCheck": true,//true 将跳过对所有 .d.ts 声明文件的类型检查，能显著加快编译速度，且不会影响你自身代码的类型安全。
+
+    /* Bundler mode */
+    "moduleResolution": "bundler",//模拟打包器 (如 Vite, Webpack) 的模块解析方式。它允许你从 "@/util/tools" 这样无扩展名的路径导入，也允许导入带 .ts 扩展名的文件。
+    "allowImportingTsExtensions": true,//允许你写 import './foo.ts'。必须配合
+    "verbatimModuleSyntax": true,//强制你使用正确的类型导入语法。如果只想导入类型，必须写 import type { Foo }，这样打包器在构建时能安全地移除这些导入，避免运行时错误。
+    "moduleDetection": "force",// 强制将项目中所有 .ts 文件都视为模块（而非全局脚本），这样就不会出现“变量重复声明”的错误。
+    "noEmit": true,//告诉 TypeScript 只做类型检查，不要生成任何 .js 文件。因为代码的实际转译和打包由 Vite (esbuild) 完成，TS 在这里只扮演“类型校验官”。
+
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,//有未使用的局部变量会报错。确保代码干净。
+    "noUnusedParameters": true,//有未使用的函数参数会报错。防止僵尸代码
+    "erasableSyntaxOnly": true,//仅允许使用可被擦除的 TypeScript 语法。所有类型注解都会被直接删除，而不会改变运行时行为。这保证了 Vite 的 esbuild 能安全高效地剥离类型。
+    "noFallthroughCasesInSwitch": true,//switch 语句中的 case 必须用 break 或 return 显式中断，防止意外的逻辑穿透。
+    "noUncheckedSideEffectImports": true//导入时，如果该模块存在副作用（如 import 'reflect-metadata'），但你不能确定它是否真的存在，则会报错。这是一种更严格的安全检查。
+  },
+  "include": ["vite.config.ts"]//仅包含 vite.config.ts 这一个文件，明确将 Node 环境限制在构建脚本内。
+}

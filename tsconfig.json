@@ -1,0 +1,11 @@
+{
+  "files": [],// 指定要解析的文件列表
+  "references": [//是的，references 属性就是专门用来组织和引用多个子项目配置的。 它是 TypeScript 项目引用（Project References） 功能的核心配置项。
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ],
+}

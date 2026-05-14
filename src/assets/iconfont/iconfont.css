@@ -1,0 +1,29 @@
+@font-face {
+  font-family: "iconfont"; /* Project id  */
+  src: url('iconfont.ttf?t=1770873242378') format('truetype');
+}
+
+.iconfont {
+  font-family: "iconfont" !important;
+  font-size: 1.4em;
+  font-style: normal;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.iconfont-denglu-copy:before {
+  content: "\e63a";
+}
+
+.iconfont-zixun:before {
+  content: "\e619";
+}
+
+.iconfont-dianyingyuan:before {
+  content: "\e608";
+}
+
+.iconfont-dianying:before {
+  content: "\e8ae";
+}
+

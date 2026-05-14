@@ -1,0 +1,27 @@
+{
+  "extends": "@vue/tsconfig/tsconfig.dom.json",
+  "compilerOptions": {
+    "tsBuildInfoFile": "./node_modules/.tmp/tsconfig.app.tsbuildinfo",
+    "types": [
+      "vite/client"
+    ],
+    /* Linting */
+    "strict": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+    "erasableSyntaxOnly": true,
+    "noFallthroughCasesInSwitch": true,
+    "noUncheckedSideEffectImports": true,
+    "baseUrl": ".",//设置解析相对模块的基准目录为项目根目录。
+    "paths": {//映射路径别名。import ... from '@/util/tools' 会被 TS 理解为 ./src/util/tools。这需要与 Vite 配置里的 resolve.alias 保持一致。
+      "@/*": [//把代码里 @/ 后面的内容，原封不动地映射到 src/ 路径下。
+        "src/*"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "src/**/*.vue"
+  ]
+}

@@ -1,5 +1,5 @@
-import { createWebHistory, createRouter } from 'vue-router'
-// import { createWebHashHistory, createRouter } from 'vue-router'
+// import { createWebHistory, createRouter } from 'vue-router'
+import { createWebHashHistory, createRouter } from 'vue-router'
 import Nowplaying from '@/views/films/Nowplaying.vue'
 import Comingsoon from '@/views/films/Comingsoon.vue'
 import Search from '@/views/Search.vue'
@@ -207,8 +207,8 @@ const routes = [
 ]
 
 const router = createRouter({
-  // history: createWebHashHistory(), // hash  #/film #/center
-  history: createWebHistory(), // 
+  history: createWebHashHistory(), // hash  #/film #/center
+  // history: createWebHistory(), // 
   // history /film /center
   routes, // `routes: routes` 的缩写
 

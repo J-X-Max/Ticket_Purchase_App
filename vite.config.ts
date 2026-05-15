@@ -1,10 +1,11 @@
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
+import { cloudflare } from "@cloudflare/vite-plugin";
 // https://vite.dev/config/
 export default defineConfig({
   base: './',   // 关键！所有资源用相对路径，适配任何部署子目录
-  plugins: [vue()],
+  plugins: [vue(), cloudflare()],
   css: {
     preprocessorOptions: {
       scss: {

@@ -124,18 +124,21 @@ tabbarStore.change(true)
             }
 
             .van-card__content {
-                font-size: 1.2rem;
-                display: flex;
+                font-size: .9rem;
+
+                line-height: 1.2;
+                // display: flex;
                 justify-content: center;
             }
 
             .van-card__title {
+                font-size: 1rem;
                 white-space: nowrap;
-                line-height: 1;
+                line-height: 1.2;
                 margin-top: 0.2rem;
                 display: flex;
                 align-items: center;
-                margin-bottom: 0.475rem;
+                margin-bottom: 3px;
 
                 .button-style {
                     color: #fff;
@@ -149,29 +152,29 @@ tabbarStore.change(true)
             }
 
             .audience-rating {
-                font-size: 1rem;
+                // font-size: .9rem;
                 display: flex;
                 align-items: center;
-                line-height: 1.2;
+                // line-height: 1;
 
                 .grade {
                     color: rgb(255, 150, 112);
                     font-weight: 600;
-                    font-size: 0.9rem;
+                    font-size: 0.7rem;
                     margin-left: 0.1875rem;
 
                 }
             }
 
             .actor-style {
-                font-size: 1rem;
+                // font-size: .9rem;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
 
             .time-style {
-                font-size: 1rem;
+                // font-size: .9rem;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;

@@ -132,11 +132,16 @@ watch(() => cityStore.locationError, (newVal) => {
 
 :deep(.van-tabbar) {
   height: 7.5vh;
+
   .van-tabbar-item__text {
+    height: 100%;
     display: flex;
     flex-direction: column-reverse;
     align-items: center;
-    font-size: 0.9rem;
+    justify-content: space-evenly;
+    padding: 5px 0;
+    font-size: 0.75rem;
+  box-sizing: border-box;
   }
 }
 </style>

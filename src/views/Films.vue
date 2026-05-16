@@ -6,7 +6,7 @@
     </van-swipe>
 
     <div class="header" ref="headerRef">
-        <myheader  leftType="city" :showSearch="false"   v-show ="isSticky"/>
+        <!-- <myheader leftType="city" :showSearch="false" v-show="isSticky" /> -->
         <ul class="options">
             <li v-for="tab in tabs" :key="tab.path">
                 <router-link custom :to="tab.path" v-slot="{ isActive, navigate }">
@@ -15,7 +15,7 @@
             </li>
         </ul>
     </div>
-    <router-view class="list"   v-slot="{ Component }">
+    <router-view class="list" v-slot="{ Component }">
         <transition name="fade" mode="out-in">
             <component :is="Component" />
         </transition>
@@ -23,12 +23,12 @@
 </template>
 
 <script lang="ts" setup>
-import {useSticky} from '@/util/tools'
-import { ref,} from 'vue';
+import { useSticky } from '@/util/tools'
+import { ref, } from 'vue';
 import { Swipe as vanSwipe, SwipeItem as vanSwipeItem, /* NavBar as vanNavBar, Icon as vanIcon */ } from 'vant';
-import Myheader from '@/components/Myheader.vue';
+// import Myheader from '@/components/Myheader.vue';
 
-const headerRef = ref<HTMLElement | null>(null);
+// const headerRef = ref<HTMLElement | null>(null);
 const tabs = [
     { path: '/films/nowplaying', name: '正在热映' },
     { path: '/films/comingsoon', name: '即将上映' }
@@ -42,57 +42,60 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 
 
 
-    
-  const  {isSticky} =   useSticky(() => {
-  if (!headerRef.value) return false
-  const rect = headerRef.value.getBoundingClientRect()
-  return rect.top <= 0 && window.scrollY > 0
-})
+
+// const { isSticky } = useSticky(() => {
+//     if (!headerRef.value) return false
+//     const rect = headerRef.value.getBoundingClientRect()
+//     return rect.top <= 0 && window.scrollY > 0
+// })
 
 
 
 </script>
 <style scoped lang="scss">
-@media (max-width: $breakpoint-xl ) {
-    .my-swipe {
-        aspect-ratio: 4/2;
-    }
+// @media (max-width: $breakpoint-xl ) {
+//     .my-swipe {
+//         aspect-ratio: 4/2;
+//     }
 
-}
+// }
 
-@media (max-width: $breakpoint-lg) {
-    .my-swipe {
-        aspect-ratio: 16/9;
-    }
-}
-
-
-
-@media (max-width: $breakpoint-md) {
-    .my-swipe {
-        aspect-ratio: 2/1;
-    }
-
-}
+// @media (max-width: $breakpoint-lg) {
+//     .my-swipe {
+//         aspect-ratio: 16/9;
+//     }
+// }
 
 
-@media (max-width: $breakpoint-sm) {
-    .my-swipe {
-        aspect-ratio: 1.8/1;
-    }
 
-}
+// @media (max-width: $breakpoint-md) {
+//     .my-swipe {
+//         aspect-ratio: 2/1;
+//     }
+
+// }
+
+
+// @media (max-width: $breakpoint-sm) {
+//     .my-swipe {
+//         aspect-ratio: 1.8/1;
+//     }
+
+// }
 
 .my-swipe {
     background-color: rgb(255, 255, 255);
+    max-height: 30%;
+    height: 20%;
 
     .van-swipe-item {
+
 
         img {
             width: 100%;
             height: 100%;
-            object-fit: cover;
-            object-position: center;
+            object-fit: contain;
+            object-position: center center;
         }
     }
 }
@@ -104,11 +107,13 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
     z-index: 100;
     background-color: white;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    // flex-direction: column;
     border-bottom: .0625rem solid rgb(207, 203, 203);
     text-align: center;
-    height: 14vh;
-
+    // max-height: 10%;
+    // height: 8%;
+height: clamp(38px, 29.5px + 1.5rem, 86px);
     .options {
         flex: 1;
         display: flex;
@@ -134,11 +139,11 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 
     }
 }
+
 .list {
-    height: 46vh;
+    height: auto;
     overflow-y: auto;
 }
-
 </style>
 <style lang="scss">
 .fade-enter-active,

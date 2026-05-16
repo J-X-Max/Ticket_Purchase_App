@@ -23,7 +23,7 @@
 </template>
 
 <script lang="ts" setup>
-import { useSticky } from '@/util/tools'
+// import { useSticky } from '@/util/tools'
 import { ref, } from 'vue';
 import { Swipe as vanSwipe, SwipeItem as vanSwipeItem, /* NavBar as vanNavBar, Icon as vanIcon */ } from 'vant';
 // import Myheader from '@/components/Myheader.vue';

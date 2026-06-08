@@ -65,7 +65,8 @@ const handleBuy = (filmId: number) => {
 
 }
 const onLoad = async () => {
-    if (loading.value || finished.value) return;
+    if ( finished.value) return;
+    console.log('1')
     loading.value = true; // 👈 立刻上锁，防止并发触发
     pageNum.value++;
     await cityStore.ensureCityReady();

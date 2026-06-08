@@ -94,57 +94,58 @@ import { Icon as vanIcon } from 'vant';
 import Myheader from '@/components/Myheader.vue'
 import useTabbarStore from '@/store/tabbarStore.ts';
 import useCinemaStore from '@/store/cinemaStore';
-interface Actor {
-    name: string
-    role: string
-    avatarAddress: string
-}
+import type { Film,CinemaDetail, Schedule} from '@/types'
+// interface Actor {
+//     name: string
+//     role: string
+//     avatarAddress: string
+// }
 
-interface Film {
-    filmId: number
-    name: string
-    director: string
-    poster: string
-    category: string
-    premiereAt: number
-    nation: string
-    runtime: number
-    synopsis: string
-    actors: Actor[]
-    filmType: {
-        name: string
-    }
-    photos: string[]
-    grade: string
-    showDate: number[]
-    // 其他字段按需添加
-}
-interface serve {
-    name: string;
-    description: string;
-}
-interface Cinema {
-    address: string;
-    cinemaId: number;
-    cityId: number;
-    name: string;
-    services: serve[]
-    notice: string;
-}
-interface Schedule {
-    advanceStopMins: number;
-    endAt: number;
-    filmLanguage: string;
-    hallName: string;
-    imagery: string;
-    isOnsell: boolean;
-    marketPrice: number;
-    maxSalePrice: number;
-    minSalePrice: number;
-    salePrice: number;
-    scheduleId: number;
-    showAt: number;
-}
+// interface Film {
+//     filmId: number
+//     name: string
+//     director: string
+//     poster: string
+//     category: string
+//     premiereAt: number
+//     nation: string
+//     runtime: number
+//     synopsis: string
+//     actors: Actor[]
+//     filmType: {
+//         name: string
+//     }
+//     photos: string[]
+//     grade: string
+//     showDate: number[]
+//     // 其他字段按需添加
+// }
+// interface serve {
+//     name: string;
+//     description: string;
+// }
+// interface Cinema {
+//     address: string;
+//     cinemaId: number;
+//     cityId: number;
+//     name: string;
+//     services: serve[]
+//     notice: string;
+// }
+// interface Schedule {
+//     advanceStopMins: number;
+//     endAt: number;
+//     filmLanguage: string;
+//     hallName: string;
+//     imagery: string;
+//     isOnsell: boolean;
+//     marketPrice: number;
+//     maxSalePrice: number;
+//     minSalePrice: number;
+//     salePrice: number;
+//     scheduleId: number;
+//     showAt: number;
+// }
 const cinemastore = useCinemaStore();
 const now = ref(Date.now() / 1000);
 let timer: number | null = null;
@@ -158,7 +159,7 @@ const router = useRouter();
 const activeFilm = ref<Film>()
 const activeFilmIndex = ref(0)
 const cinemaId = Number(route.params.cinemaid)
-const cinema = ref<Cinema | null>(null)
+const cinema = ref<CinemaDetail | null>(null)
 const films = ref<Film[] | null>(null)
 const selectedDateIndex = ref(0)
 const schedules = ref<Schedule[]>([])

@@ -40,11 +40,12 @@ import useTabbarStore from '@/store/tabbarStore'
 import { Icon as vanIcon, showToast, Loading as vanLoading } from 'vant'
 import { onUnmounted, ref, watch } from 'vue'
 import { http } from '@/util/tools.ts'
-type gra = {
-    imgUrl: string,
-    imgKey: string,
-    length: number,
-}
+import type{ GraphicCode } from '@/types'
+// type gra = {
+//     imgUrl: string,
+//     imgKey: string,
+//     length: number,
+// }
 const msg = ref('')
 const showloading = ref(false)
 const showpassed = ref(false)
@@ -57,7 +58,7 @@ const router = useRouter()
 const route = useRoute()
 const telnumber = ref('')
 const isgraphic = ref(false)
-const graphic_code = ref<gra | null>(null)
+const graphic_code = ref<GraphicCode | null>(null)
 const graphicCode = ref('')
 const smscode = ref('')
 const timer = ref<number | null>(null);
@@ -108,11 +109,13 @@ const handleLogin = async () => {
             let redirect = route.query.redirect
             if (redirect) {
                 if (typeof redirect === 'string') {
-                    router.push(redirect);
+                    // router.push(redirect);
+                     router.replace(redirect)
                     return
                 }
             } else {
-                router.push('/');          // 默认跳转首页
+                     router.replace('/center')
+                // router.push('/');          // 默认跳转首页
             }
 
 

@@ -1,25 +1,25 @@
 <template>
-    <van-list  v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-        class="list-container " offset="10">
-        <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
-            <van-card :thumb="item.poster">
-                <template #title>
-                    <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
-                    }}</button></div>
-                </template>
-
-                <template #desc>
-                    <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
-                    <div class="actor-style">主演: {{item.actors.map(a => a.name).join(' ')}}</div>
-                    <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}</div>
-                </template>
-                <template #footer>
-                    <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
-                </template>
-            </van-card>
-        </router-link>
-
-    </van-list>
+        <van-list  v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+            class="list-container " offset="10">
+            <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
+                <van-card :thumb="item.poster">
+                    <template #title>
+                        <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+                        }}</button></div>
+                    </template>
+    
+                    <template #desc>
+                        <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
+                        <div class="actor-style">主演: {{item.actors.map(a => a.name).join(' ')}}</div>
+                        <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}</div>
+                    </template>
+                    <template #footer>
+                        <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
+                    </template>
+                </van-card>
+            </router-link>
+    
+        </van-list>
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
@@ -28,30 +28,31 @@ import { useRouter } from 'vue-router'
 import useTabbarStore from '@/store/tabbarStore'
 import { ref } from 'vue'
 import { Card as vanCard, List as vanList, Button as vanButton } from 'vant'
-type Actors =
-    {
-        name: string;
-        role: string;
-        avatarAddress: '';
+import type { Items } from '@/types'
+// type Actors =
+//     {
+//         name: string;
+//         role: string;
+//         avatarAddress: '';
 
-    }
-type Item =
-    {
-        name: string;
-        type: number;
-    }
+//     }
+// type Item =
+//     {
+//         name: string;
+//         type: number;
+//     }
 
-interface Iitem {
-    filmId: number,
-    name: string,
-    poster: string,
-    grade: string,
-    actors: Actors[],
-    item: Item,
-    runtime: number;
-    nation: string;
-}
-const list = ref<Iitem[]>([]);  // 这里表示数组中每个元素是IItem这个接口类型
+// interface Iitem {
+//     filmId: number,
+//     name: string,
+//     poster: string,
+//     grade: string,
+//     actors: Actors[],
+//     item: Item,
+//     runtime: number;
+//     nation: string;
+// }
+const list = ref<Items[]>([]);  // 这里表示数组中每个元素是IItem这个接口类型
 const router = useRouter();
 const cityStore = useCityStore()
 const tabbarStore = useTabbarStore();
@@ -86,12 +87,38 @@ const onLoad =
 
     };
 
+
+// const onLoad = async () => {
+//     if (loading.value || finished.value) return;
+//     loading.value = true;
+
+//     try {
+//         await cityStore.ensureCityReady();
+//         pageNum.value++;
+//         const res = await http({
+//             url: `/gateway?cityId=${cityStore.cityId}&pageNum=${pageNum.value}&pageSize=10&type=1&k=6151240`,
+//             headers: { 'X-Host': 'mall.film-ticket.film.list' }
+//         });
+//         const newData = res.data.data.films || [];
+//         list.value.push(...newData);
+
+//         if (list.value.length >= res.data.data.total) {
+//             finished.value = true;
+//         }
+//     } catch (error) {
+//         pageNum.value--;   // 请求失败，页码回退
+//         console.error('加载失败', error);
+//     } finally {
+//         loading.value = false;
+//     }
+// };
 tabbarStore.change(true)
 
 </script>
 
 
 <style scoped lang="scss">
+
 .film-link {
     text-decoration: none;
     color: inherit;

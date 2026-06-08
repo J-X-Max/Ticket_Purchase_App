@@ -26,18 +26,19 @@ import { useRouter } from 'vue-router'
 import { http } from '@/util/tools'
 import { onBeforeUnmount, onBeforeMount, ref, watch, computed } from 'vue'
 import CryptoJS from 'crypto-js';//MD5加密
-type gra = {
-    imgUrl: string,
-    imgKey: string,
-    length: number,
-}
-type user = {
-    data: {
-        mobile: string,
-    }
-    msg: string,
-    status: number
-}
+import type { GraphicCode,UserSecurity } from '@/types'
+// type gra = {
+//     imgUrl: string,
+//     imgKey: string,
+//     length: number,
+// }
+// type user = {
+//     data: {
+//         mobile: string,
+//     }
+//     msg: string,
+//     status: number
+// }
 const processCode = ref(0)
 const router = useRouter()
 const showpassed = ref(false)
@@ -50,8 +51,8 @@ const titletext = ref('输入图形验证码')
 const smslength = ref(0)
 const showimg = ref(false)
 const showsuccess = ref(false)
-const captcha = ref<gra | null>(null)
-const Userdata = ref<user | null>(null)
+const captcha = ref<GraphicCode | null>(null)
+const Userdata = ref<UserSecurity | null>(null)
 const msg = ref('')
 const voicetip = ref(false)
 const isactive = ref(false)

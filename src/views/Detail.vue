@@ -81,30 +81,31 @@ import 'swiper/css' // 引入核心样式
 import Myheader from '@/components/Myheader.vue'
 import { Icon as vanIcon } from 'vant';
 import showphotos from '@/components/Showphotos.vue'
+import type {Film} from '@/types'
 // 类型定义
-interface Actor {
-  name: string
-  role: string
-  avatarAddress: string
-}
+// interface Actor {
+//   name: string
+//   role: string
+//   avatarAddress: string
+// }
 
-interface Film {
-  filmId: number
-  name: string
-  poster: string
-  category: string
-  premiereAt: number
-  nation: string
-  runtime: number
-  synopsis: string
-  actors: Actor[]
-  filmType: {
-    name: string
-  }
-  photos: string[]
-  grade: string
-  // 其他字段按需添加
-}
+// interface Film {
+//   filmId: number
+//   name: string
+//   poster: string
+//   category: string
+//   premiereAt: number
+//   nation: string
+//   runtime: number
+//   synopsis: string
+//   actors: Actor[]
+//   filmType: {
+//     name: string
+//   }
+//   photos: string[]
+//   grade: string
+//   // 其他字段按需添加
+// }
 const tabbarstore = useTabbarStore()
 const isDetailVisible = ref(true)
 const { isSticky } = useSticky(() => window.scrollY > 10)

@@ -37,11 +37,12 @@ import { Icon as vanIcon, showToast, Loading as vanLoading } from 'vant'
 import { onUnmounted, ref, watch } from 'vue'
 import { http } from '@/util/tools.ts'
 import CryptoJS from 'crypto-js';//MD5加密
-type gra = {
-    imgUrl: string,
-    imgKey: string,
-    length: number,
-}
+import type { GraphicCode } from '@/types'
+// type gra = {
+//     imgUrl: string,
+//     imgKey: string,
+//     length: number,
+// }
 const smscodemsg = ref('')
 const newpasswordmsg = ref('请输入6至20位密码')
 const showSmsCodeTip = ref(false)
@@ -58,7 +59,7 @@ const router = useRouter()
 // const route = useRoute()
 const telnumber = ref('')
 const isgraphic = ref(false)
-const graphic_code = ref<gra | null>(null)
+const graphic_code = ref<GraphicCode | null>(null)
 const graphicCode = ref('')
 const smscode = ref('')
 const timer = ref<number | null>(null);

@@ -1,57 +1,59 @@
 <template>
-    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-        class="list-container " offset="10">
-        <router-link :to="'/detail/' + item.filmId" v-for="item,index in list" :key="item.filmId" class="film-link">
-            <van-card :thumb="item.poster">
-                <template #title>
-                    <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
-                    }}</button></div>
-                </template>
+        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+            class="list-container " offset="10">
+            <router-link :to="'/detail/' + item.filmId" v-for="item, index in list" :key="item.filmId"
+                class="film-link">
+                <van-card :thumb="item.poster">
+                    <template #title>
+                        <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+                                }}</button></div>
+                    </template>
 
-                <template #desc>
-                    <div class="actor-style">主演: {{item.actors.map(a => a.name).join(' ')}}</div>
-                    <div class="time-style">上映日期:{{film_date[index]}}</div>
-                </template>
-                <template #footer>
-                    <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">预购</van-button>
-                </template>
-            </van-card>
-        </router-link>
-
-    </van-list>
+                    <template #desc>
+                        <div class="actor-style">主演: {{item.actors.map(a => a.name).join(' ')}}</div>
+                        <div class="time-style">上映日期:{{ film_date[index] }}</div>
+                    </template>
+                    <template #footer>
+                        <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">预购</van-button>
+                    </template>
+                </van-card>
+            </router-link>
+        </van-list>
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
-import { ref, computed} from 'vue'
+import { ref, computed } from 'vue'
 import { Card as vanCard, List as vanList, Button as vanButton } from 'vant'
-type Actors =
-    {
-        name: string;
-        role: string;
-        avatarAddress: '';
 
-    }
-type Item =
-    {
-        name: string;
-        type: number;
-    }
+import type { Items } from '@/types'
+// type Actor =
+//     {
+//         name: string;
+//         role: string;
+//         avatarAddress: '';
+
+//     }
+// type Item =
+//     {
+//         name: string;
+//         type: number;
+//     }
 
 
-interface Iitem {
-    filmId: number,
-    name: string,
-    poster: string,
-    grade: string,
-    actors: Actors[],
-    item: Item,
-    premiereAt: number,
-    runtime: number;
-    nation: string;
-}
-const list = ref<Iitem[]>([]);  // 这里表示数组中每个元素是IItem这个接口类型
+// interface Items {
+//     filmId: number,
+//     name: string,
+//     poster: string,
+//     grade: string,
+//     actors: Actor[],
+//     item: Item,
+//     premiereAt: number,
+//     runtime: number;
+//     nation: string;
+// }
+const list = ref<Items[]>([]);  // 这里表示数组中每个元素是IItem这个接口类型
 const router = useRouter();
 const cityStore = useCityStore()
 const loading = ref<boolean>(false);
@@ -85,14 +87,14 @@ const onLoad =
 
     };
 const film_date = computed(() => {
-   return list.value?.map((item)=>{
-    const date = new Date(item.premiereAt)
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-     const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
-    const weekday = weekdays[date.getDay()]
-    return  `${weekday} ${month}月${day}日`
-   })
+    return list.value?.map((item) => {
+        const date = new Date(item.premiereAt)
+        const month = date.getMonth() + 1
+        const day = date.getDate()
+        const weekdays = ['周日', '周一', '周二', '周三', '周四', '周五', '周六']
+        const weekday = weekdays[date.getDay()]
+        return `${weekday} ${month}月${day}日`
+    })
 }
 
 )
@@ -217,4 +219,3 @@ const film_date = computed(() => {
     } */
 }
 </style>
-

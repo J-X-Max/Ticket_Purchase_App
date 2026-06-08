@@ -14,14 +14,14 @@
         <div class="product-up">
             <img :src="orderInfo?.skuList[0].imgUrl">
             <div class="product-info">
-                <div class="title">{{ orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.filmName }}({{
-                    orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0].goodsName }})
+                <div class="title">{{ orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.filmName }}({{
+                    orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.goodsName }})
                 </div>
                 <div>{{ formattedEndDate }}</div>
                 <div class="address">{{ orderInfo?.skuList[0].thirdOrderExtInfo.cinemaInfo.name }}</div>
-                <div class="hall">{{ orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.hallName + '(' +
-                    orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0].goodsCount +
-                    '张) ' + orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.sectionName }}</div>
+                <div class="hall">{{ orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.hallName + '(' +
+                    orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.goodsCount +
+                    '张) ' + orderInfo?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.sectionName }}</div>
                 <div class="seats">{{ formatseats }}</div>
             </div>
         </div>
@@ -73,40 +73,41 @@ import { useRoute,useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed } from 'vue';
 import { showToast, Icon as vanIcon } from 'vant';
 import useTabbarStore from '@/store/tabbarStore';
-type Order = {
-    mobile: number,
-    totalPrice: number,
-    payOrderId: string,
-    createdAt: number,
-    endPayTime: number,
-    skuList: [{
-        finalPrice: number,
-        imgUrl: string,
-        thirdOrderExtInfo: {
-            cinemaInfo: {
-                name: string,
-                address: string,
-            },
-            goodsInfo: [{
-                goodsCount: number,
-                goodsName: string,
-                seatExtInfo: {
-                    filmId:number,
-                    filmName: string,
-                    hallName: string,
-                    seats: string,
-                    watchTime: number,
-                    sectionName: string,
-                    price: number,
-                }
-            }]
-        }
-    }]
-}
+import type { OrderInfo } from '@/types';
+// type Order = {
+//     mobile: number,
+//     totalPrice: number,
+//     payOrderId: string,
+//     createdAt: number,
+//     endPayTime: number,
+//     skuList: [{
+//         finalPrice: number,
+//         imgUrl: string,
+//         thirdOrderExtInfo: {
+//             cinemaInfo: {
+//                 name: string,
+//                 address: string,
+//             },
+//             goodsInfo: [{
+//                 goodsCount: number,
+//                 goodsName: string,
+//                 seatExtInfo: {
+//                     filmId:number,
+//                     filmName: string,
+//                     hallName: string,
+//                     seats: string,
+//                     watchTime: number,
+//                     sectionName: string,
+//                     price: number,
+//                 }
+//             }]
+//         }
+//     }]
+// }
 const route = useRoute()
 const router = useRouter()
 const tabbarStore = useTabbarStore()
-const orderInfo = ref<Order | null>(null)
+const orderInfo = ref<OrderInfo | null>(null)
 const customer = ref({})
 const formatMobile = (mobile: number | string): string => {
     const str = String(mobile);
@@ -146,8 +147,8 @@ const handleCopy = async () => {
     }
 };
 const formatseats = computed(() => {
-    const price = (orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.price ?? 0) / 100
-    const str = orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.seats
+    const price = (orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.price ?? 0) / 100
+    const str = orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.seats
     if (str) {
         return str.split('|').map((item) => {
             // 操作 item
@@ -173,7 +174,7 @@ const formattedPaytime = computed(() => {
     return `${weekday} ${year}-${month}-${day} ${hours}:${minutes}:${seconds}`
 })
 const formattedEndDate = computed(() => {
-    if (!orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.watchTime) return ''
+    if (!orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.watchTime) return ''
     // if (!orderData.value?.createdAt) return ''
     const date = new Date(orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.watchTime * 1000)
     const weekdays = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']
@@ -222,7 +223,7 @@ const fetchorder = async () => {
     }
 }
 const gotoRebuy =() =>{
-    router.push(`/detail/${orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0].seatExtInfo.filmId}`)
+    router.push(`/detail/${orderInfo.value?.skuList[0].thirdOrderExtInfo.goodsInfo[0]?.seatExtInfo.filmId}`)
 }
 tabbarStore.isTabbarShow = false
 onBeforeMount(() => {

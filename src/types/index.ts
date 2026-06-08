@@ -1,0 +1,11 @@
+// 统一导出所有类型，使用时可直接 import { Film, Cinema } from '@/types'
+
+export type { User, Spe, UserSecurity,Record,Balance,ListItem } from './center'
+export type { Film, Items, Item, Actor } from './film'
+export type { showCinemas, Cinema, CinemaWithDistance, CinemaDetail, CinemaService } from './cinema'
+export type { Schedule, SectionPrice, ScheduleDetail } from './schedule'
+export type { SeatItem, SeatingChart, ProcessedSeat, SectionIconItem, SectionIconMap } from './seat'
+export type { OrderData, GoodsInfo, Sku, SeatExtInfo, PayWayItem ,SkuExtend,CinemaInfo,OrderInfo} from './order'
+export type { City, CityGroup } from './city'
+export type { GraphicCode } from './login'
+export type { Page } from './active'

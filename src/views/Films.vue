@@ -16,9 +16,10 @@
         </ul>
     </div>
     <router-view class="list" v-slot="{ Component }">
-        <transition name="fade" mode="out-in">
-            <component :is="Component" />
-        </transition>
+    <!-- <router-view class="list" > -->
+        <!-- <transition name="fade" mode="default" > -->
+            <component v-if="Component" :is="Component" />
+        <!-- </transition> -->
     </router-view>
 </template>
 

@@ -43,21 +43,22 @@ import useTabbarStore from '@/store/tabbarStore';
 import useCityStore from '@/store/cityStore';
 import router from '@/router';
 import { Icon as VanIcon, Cell as VanCell } from 'vant';
-type Cinema = {
-    cinemaId: number;  // 根据实际数据类型调整
-    name: string;
-    eTicketFlag: number;
-    districtName: string;
-    address: string;
-    lowPrice: number;
+import type { Cinema,CinemaWithDistance } from '@/types'
+// type Cinema = {
+//     cinemaId: number;  // 根据实际数据类型调整
+//     name: string;
+//     eTicketFlag: number;
+//     districtName: string;
+//     address: string;
+//     lowPrice: number;
 
-    latitude: number;
-    longitude: number;
-}
+//     latitude: number;
+//     longitude: number;
+// }
 
-type CinemaWithDistance = Cinema & {
-    distance: number | string; // 距离，单位可选
-};
+// type CinemaWithDistance = Cinema & {
+//     distance: number | string; // 距离，单位可选
+// };
 
 const controller = new AbortController();
 const tabbarStore = useTabbarStore()

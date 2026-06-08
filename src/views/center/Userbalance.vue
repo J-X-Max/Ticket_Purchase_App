@@ -15,18 +15,19 @@ import useTabbarStore from '@/store/tabbarStore';
 import { http } from '@/util/tools';
 import { ref, onBeforeMount } from 'vue';
 import { useRouter } from 'vue-router';
-type Record = {
-    pageNum: number,
-    pageSize: number,
-    record: Array<any>,
-    total: number
-}
-type Balance = {
-    totalAmount: number,
-    availableAmount: number,
-    frozenAmount: number
+import type {Record, Balance} from '@/types'
+// type Record = {
+//     pageNum: number,
+//     pageSize: number,
+//     record: Array<any>,
+//     total: number
+// }
+// type Balance = {
+//     totalAmount: number,
+//     availableAmount: number,
+//     frozenAmount: number
 
-}
+// }
 const router = useRouter()
 const tabbarStore = useTabbarStore()
 const balance = ref<Balance|null>(null)

@@ -7,9 +7,10 @@ import { http } from '@/util/tools';
 import { useRoute } from 'vue-router'
 import { ref, onBeforeMount } from 'vue';
 import useTabbarStore from '@/store/tabbarStore';
-type Page = {
-    content: string
-}
+import type{Page} from '@/types'
+// type Page = {
+//     content: string
+// }
 const tabbarStore = useTabbarStore()
 const route = useRoute()
 const pageinfo = ref<Page | null>(null)

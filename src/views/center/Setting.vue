@@ -33,7 +33,7 @@
             <div class="comfirm" @click="comfirm">清除</div>
             <div class="cancel" @click="cancel">取消</div>
         </van-popup>
-        
+
         <van-popup class="clear-box" v-model:show="showExit" round safe-area-inset-bottom position="bottom"
             :style="{ height: 'auto' }">
             <div class="title">是否退出卖座电影</div>
@@ -50,35 +50,36 @@ import { ref, onBeforeMount, computed } from 'vue'
 import useTabbarStore from '@/store/tabbarStore';
 import useSetStore from '@/store/setStore';
 import { useRouter } from 'vue-router';
-type user = {
-    mobile: string,
-    headIcon: string,
-    nickName: string,
-    gender: number,
-    birthday: string,
-    userId: number,
-    hanPassword: number,
-    hasPayPwd: number,
-}
+import type { User } from '@/types';
+// type User = {
+//     mobile: string,
+//     headIcon: string,
+//     nickName: string,
+//     gender: number,
+//     birthday: string,
+//     userId: number,
+//     hanPassword: number,
+//     hasPayPwd: number,
+// }
 const router = useRouter()
 const showExit = ref(false)
 const showclearCache = ref(false)
 const setStore = useSetStore()
 const tabbarStore = useTabbarStore()
-const userInfo = ref<user | null>(null);
+const userInfo = ref<User | null>(null);
 const clearCache = () => {
     showclearCache.value = true
 }
 const Exitlog = () => {
-   showExit.value = true 
+    showExit.value = true
 }
-const exit=  () =>{
-localStorage.removeItem('token');
-sessionStorage.removeItem('set');
-router.push('/login')
+const exit = () => {
+    localStorage.removeItem('token');
+    sessionStorage.removeItem('set');
+    router.push('/login')
 }
 const comfirm = () => {
-    
+
     showclearCache.value = false
 
 }
@@ -140,7 +141,8 @@ button {
     align-items: stretch;
     text-align: center;
     // padding: 0 10px;
-background: #ececec;
+    background: #ececec;
+
     .cancel,
     .comfirm {
         padding: 1rem 0;

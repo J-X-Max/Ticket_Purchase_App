@@ -59,18 +59,18 @@ import { Icon as VanIcon, IndexBar as vanIndexBar, IndexAnchor as vanIndexAnchor
 import useCityStore from '../store/cityStore.ts'
 import useTabbarStore from '../store/tabbarStore.ts'
 import { useRouter } from 'vue-router'
-
-interface City {
-  name: string,
-  cityId: number,
-  pinyin: string,
-  isHot: number,
-  // 可根据实际接口字段补充
-}
-interface CityGroup {
-  type: string
-  list: City[]
-}
+import type { CityGroup,City} from '@/types'
+// interface City {
+//   name: string,
+//   cityId: number,
+//   pinyin: string,
+//   isHot: number,
+//   // 可根据实际接口字段补充
+// }
+// interface CityGroup {
+//   type: string
+//   list: City[]
+// }
 const forceShowRecommend = ref(false);
 const controller = new AbortController();
 const hotcitylist = ref()

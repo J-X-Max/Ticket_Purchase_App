@@ -1,53 +1,63 @@
-<template ><!--最外部只能有一个template,且v-if等指令在这个上面不生效-->
-        <template v-if="userInfo && special">
-            <div class="banner">
-                <div @click="gotouser" class="headPortrait-box">
-                    <div class="img-box"><img :src="userInfo?.headIcon"></div>
-                    <strong>{{ userInfo?.nickName }}</strong>
-                </div>
+<template><!--最外部只能有一个template,且v-if等指令在这个上面不生效-->
+    <!-- <template v-if="userInfo && special"> -->
+    <div class="banner">
+        <div @click="gotouser" class="headPortrait-box">
+            <div v-if="isAuthenticated===null" class="img-box">
+                <img  :src="`../../db/public/images/Profile_picture/image.png`">
             </div>
+             <div v-if="userInfo?.headIcon" class="img-box">
+                <img  :src="userInfo?.headIcon">
+            </div>
+            <strong>{{ nickName }}</strong>
+        </div>
+    </div>
 
-        <div class="couponCount-box">
-            <div @click="gotousercard" class="couponCount-item">
-                <div>
-                    <span>{{ special?.couponCount }}张 </span>
-                    <span class="text">卖座券</span>
-                </div>
-            </div>
-            <div @click="gotouserbalance" class="couponCount-item">
-                <div>
-                    <span>¥{{ special?.availableBalance }}</span>
-                    <span class="text">余额</span>
-                </div>
+    <div class="couponCount-box">
+        <div @click="gotousercard" class="couponCount-item">
+            <div>
+                <span>{{ special?.couponCount ? special.couponCount : 0 }}张 </span>
+                <span class="text">卖座券</span>
             </div>
         </div>
-        <van-cell-group>
-            <van-cell title="电影订单" icon="coupon-o" is-link to="/user/order" />
-            <van-cell title="组合红包" icon="bill-o" is-link to="/user/redPacket" />
-            <van-cell title="历史记录" icon="underway-o" is-link to="/center/record" />
-            <van-cell title="帮助与客服" icon="service-o" is-link to="/help" />
-            <van-cell title="设置" icon="setting-o" is-link to="/center/setting" />
-        </van-cell-group>
-        </template>
-    </template>
+        <div @click="gotouserbalance" class="couponCount-item">
+            <div>
+                <span>¥{{ special?.availableBalance ? special.availableBalance : 0 }}</span>
+                <span class="text">余额</span>
+            </div>
+        </div>
+    </div>
+    <van-cell-group>
+        <van-cell title="电影订单" icon="coupon-o" is-link to="/user/order" />
+        <van-cell title="组合红包" icon="bill-o" is-link to="/user/redPacket" />
+        <van-cell title="历史记录" icon="underway-o" is-link to="/center/record" />
+        <van-cell title="帮助与客服" icon="service-o" is-link to="/help" />
+        <van-cell title="设置" icon="setting-o" is-link to="/center/setting" />
+    </van-cell-group>
+    <!-- </template> -->
+</template>
 
 <script lang="ts" setup>
 import useTabbarStore from '@/store/tabbarStore';
 import { onBeforeMount, ref } from 'vue';
 import { http } from '@/util/tools';
 import { Cell as vanCell, CellGroup as vanCellGroup } from 'vant';
-import router from '@/router';
-type user = {
-    headIcon: string,
-    nickName: string,
-}
-type spe = {
-    couponCount: number,
-    availableBalance: number,
-}
+import { useRouter } from 'vue-router';
+import type { User, Spe } from '@/types'
+
+// type user = {
+//     headIcon: string,
+//     nickName: string,
+// }
+// type spe = {
+//     couponCount: number,
+//     availableBalance: number,
+// }
 const tabbarStore = useTabbarStore();
-const userInfo = ref<user | null>(null);
-const special = ref<spe | null>(null);
+const userInfo = ref<User | null>(null);
+const special = ref<Spe | null>(null);
+const nickName = ref<string|undefined>()
+const isAuthenticated = localStorage.getItem("token")
+const router = useRouter();
 const gotouser = () => {
     router.push('/user')
 }
@@ -59,6 +69,11 @@ const gotouserbalance = () => {
 }
 tabbarStore.isTabbarShow = true;
 onBeforeMount(async () => {
+    if (isAuthenticated === null) {
+      nickName.value = '立即登录'
+        return
+
+    }
     try {
         const [res1, res2] = await Promise.all([//_是占位符号,不用的参数可以用其占位,但是不能在一个数组里出现两个_ 这样是重复声明了,可以用_res4等不同的变量名即可.
             http.get('/gateway/', {
@@ -102,6 +117,7 @@ onBeforeMount(async () => {
             }),
         ])
         userInfo.value = res1.data.data
+        nickName.value = userInfo.value?.nickName
         special.value = res2.data.data
     } catch (error) {
         console.log(error)
@@ -129,6 +145,15 @@ onBeforeMount(async () => {
             border-radius: 50%;
             background-color: #f0f0f000; // 加载时背景色
             border: 3px solid #ffffff;
+
+            img {
+                border-radius: 50%;
+                object-fit: fill;
+                object-position: center center;
+                transform: scale(1.1);
+                width: 100%;
+                height: 100%;
+            }
         }
 
         strong {

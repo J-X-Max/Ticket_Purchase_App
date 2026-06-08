@@ -16,7 +16,8 @@
 
     <div class="list-wrapper">
         <van-cell center :title="cinema.name" :label="cinema.address" v-for="cinema in sortedCinemas"
-            :key="cinema.cinemaId" :to="'/cinemas/' + cinema.cinemaId + '/film/' + route.params.id +'/'+ activeshowDate">
+            :key="cinema.cinemaId"
+            :to="'/cinemas/' + cinema.cinemaId + '/film/' + route.params.id + '/' + activeshowDate">
             <div>
                 <div>¥<span> {{ cinema.lowPrice / 100 }} </span>起</div>
                 <div class="distance">距离{{ cinema.distance }}km</div>
@@ -32,7 +33,7 @@ import 'swiper/css' // 引入核心样式
 import { http } from '@/util/tools.ts'
 import Myheader from '@/components/Myheader.vue';
 import { useRoute } from 'vue-router'
-import { computed, ref, onBeforeMount  } from 'vue'
+import { computed, ref, onBeforeMount } from 'vue'
 import useTabbarStore from '@/store/tabbarStore.ts';
 // import { useCinemaStore } from '@/store/cinemaStore';
 // import useCinemaStore from '../store/cinemaStore';
@@ -42,48 +43,47 @@ import {
     DropdownItem as vanDropdownItem,
     Cell as vanCell
 } from 'vant';
-interface Actor {
-    name: string
-    role: string
-    avatarAddress: string
-}
+import type { Film, showCinemas, Cinema, CinemaWithDistance } from '@/types'
+// interface Actor {
+//     name: string
+//     role: string
+//     avatarAddress: string
+// }
 
-interface Film {
-    filmId: number
-    name: string
-    poster: string
-    category: string
-    premiereAt: number
-    nation: string
-    runtime: number
-    synopsis: string
-    actors: Actor[]
-    filmType: {
-        name: string
-    }
-    photos: string[]
-    grade: string
-    // 其他字段按需添加
-}
-interface showCinemas {
-    cinemaList: number[];
-    showDate: number
-}
-type Cinema = {
-    cinemaId: number;  // 根据实际数据类型调整
-    name: string;
-    eTicketFlag: number;
-    districtName: string;
-    address: string;
-    lowPrice: number;
-
-    latitude: number;
-    longitude: number;
-}
-type CinemaWithDistance = Cinema & {
-    distance: number | string; // 距离，单位可选
-};
-// const router = useRouter()
+// interface Film {
+//     filmId: number
+//     name: string
+//     poster: string
+//     category: string
+//     premiereAt: number
+//     nation: string
+//     runtime: number
+//     synopsis: string
+//     actors: Actor[]
+//     filmType: {
+//         name: string
+//     }
+//     photos: string[]
+//     grade: string
+//     // 其他字段按需添加
+// }
+// interface showCinemas {
+//     cinemaList: number[];
+//     showDate: number
+// }
+// type Cinema = {
+//     cinemaId: number;  // 根据实际数据类型调整
+//     name: string;
+//     eTicketFlag: number;
+//     districtName: string;
+//     address: string;
+//     lowPrice: number;
+//     latitude: number;
+//     longitude: number;
+// }
+// type CinemaWithDistance = Cinema & {
+//     distance: number | string; // 距离，单位可选
+// };
 
 const tabbarstore = useTabbarStore()
 const selectedDateIndex = ref(0)
@@ -211,9 +211,9 @@ const fetchCinemas = async () => {
         cinemas.value = []
     }
 }
-  
+
 onBeforeMount(async () => {
-  tabbarstore.change(false)
+    tabbarstore.change(false)
     await cityStore.ensureCityReady()
     try {
         const res1 = await http({
@@ -230,7 +230,7 @@ onBeforeMount(async () => {
         console.error(error)
     } finally {
         if (showCinemas.value) {
-              activeshowDate.value = showCinemas.value[0]?.showDate
+            activeshowDate.value = showCinemas.value[0]?.showDate
             selectedDateIndex.value = 0
             await fetchCinemas()
         }
@@ -288,11 +288,11 @@ onBeforeMount(async () => {
 .van-dropdown-menu {
     height: 6vh;
 
-    :deep( .van-dropdown-menu__bar ) {
+    :deep(.van-dropdown-menu__bar) {
         height: inherit;
 
         .van-dropdown-menu__title {
-            font-size: 1rem ;
+            font-size: 1rem;
             line-height: 1;
         }
 

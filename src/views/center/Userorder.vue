@@ -37,26 +37,27 @@ import Myheader from '@/components/Myheader.vue';
 import { http } from '@/util/tools';
 import { useRouter } from 'vue-router';
 import useTabbarStore from '@/store/tabbarStore';
-type ListItem = {
-    payOrderId: string,
-    endPayTime: number,
-    totalPrice: number,
-    orderStatus: number,
-    createdAt: number,
-    skuList: [
-        {
-            productName: string,
-            imgUrl: string,
-            count: number,
-            price: number,
-            extraInfo: {
-                filmId: number,
-                finishTime: number
-                watchTime: number,
-            },
-        }
-    ],
-}
+import type {ListItem} from '@/types'
+// type ListItem = {
+//     payOrderId: string,
+//     endPayTime: number,
+//     totalPrice: number,
+//     orderStatus: number,
+//     createdAt: number,
+//     skuList: [
+//         {
+//             productName: string,
+//             imgUrl: string,
+//             count: number,
+//             price: number,
+//             extraInfo: {
+//                 filmId: number,
+//                 finishTime: number
+//                 watchTime: number,
+//             },
+//         }
+//     ],
+// }
 // type FormattedListItem = Omit<ListItem, 'createdAt'> & {//Omit表示排除createdAt属性创建一个新类型在与后面&的属性合并
 //     createdAt: string;   // 明确变为 string
 // };

@@ -15,9 +15,9 @@
             <span v-if="showInterval" class="interval">{{ remainingSeconds ? remainingSeconds + '秒' : '等待中' }}</span>
         </div>
         <div class="graphic-input-box" v-show="showgraphicinput"><input v-model="graCode"
-                :maxlength="GraphicCode?.length" placeholder="图形验证码" type="tel">
+                :maxlength="graphicCode?.length" placeholder="图形验证码" type="tel">
             <transition name="pop"><van-icon class="pass" v-if="showpassed" name="passed" /></transition>
-            <img :src="GraphicCode?.imgUrl" @click="refreshCaptcha"></img>
+            <img :src="graphicCode?.imgUrl" @click="refreshCaptcha"></img>
         </div>
 
         <div class="toast" v-if="showtip">{{ msg }}</div>
@@ -32,11 +32,12 @@ import { computed, ref, onUnmounted, watch } from 'vue'
 import Myheader from '@/components/Myheader.vue';
 import { http } from '@/util/tools.ts';
 import { useRouter } from 'vue-router'
-type gra = {
-    imgUrl: string,
-    imgKey: string,
-    length: number,
-}
+import type { GraphicCode } from '@/types';
+// type gra = {
+//     imgUrl: string,
+//     imgKey: string,
+//     length: number,
+// }
 
 const router = useRouter()
 const showtelclear = ref(false)
@@ -57,7 +58,7 @@ const remainingSeconds = ref<number>(60)
 const setStore = useSetStore()
 const showinput = ref(false)
 const showgraphicinput = ref(false)
-const GraphicCode = ref<gra | null>(null)
+const graphicCode = ref<GraphicCode | null>(null)
 const processCode = ref(0)
 const isInitialization = ref(false)
 const fetchSmSed = ref(false)
@@ -160,7 +161,7 @@ const refreshCaptcha = async () => {
             headers: { 'X-Host': 'mall.user.captcha' }
         })
         if (res.data.status === 0) {
-            GraphicCode.value = res.data.data
+            graphicCode.value = res.data.data
             // 清空输入
             // codeValues.value = '' 
             // 聚焦第一个输入框
@@ -182,7 +183,7 @@ const fetchSmSandCaptcha = async () => {
         const res2 = await http.post('/gateway',
             {
                 imgCode: graCode.value || '',
-                imgKey: GraphicCode.value?.imgKey || '',
+                imgKey: graphicCode.value?.imgKey || '',
                 mobile: setStore.mobile,
                 type: '7',
             },
@@ -201,7 +202,7 @@ const fetchSmSandCaptcha = async () => {
                     }
                 })
             if (res3.data.status === 0) {
-                GraphicCode.value = res3.data.data
+                graphicCode.value = res3.data.data
                 showgraphicinput.value = true
 
                 startCountdown()
@@ -233,7 +234,7 @@ const fetchSmSandCaptcha = async () => {
         const res2 = await http.post('/gateway',
             {
                 imgCode: graCode.value || '',
-                imgKey: GraphicCode.value?.imgKey || '',
+                imgKey: graphicCode.value?.imgKey || '',
                 mobile: newtel.value,
                 type: '8',
             },
@@ -252,7 +253,7 @@ const fetchSmSandCaptcha = async () => {
                     }
                 })
             if (res3.data.status === 0) {
-                GraphicCode.value = res3.data.data
+                graphicCode.value = res3.data.data
                 showgraphicinput.value = true
 
                 startCountdown()
@@ -333,7 +334,7 @@ watch([processCode, graCode, smscode, newtel], async ([newProcessCode, newgraCod
                     isable.value = false
                 }
             }
-            if (!fetchSmSed.value && newgraCode.length === GraphicCode.value?.length) {
+            if (!fetchSmSed.value && newgraCode.length === graphicCode.value?.length) {
                 await fetchSmSandCaptcha()
             }
 
@@ -377,8 +378,8 @@ watch([processCode, graCode, smscode, newtel], async ([newProcessCode, newgraCod
             } else {
                 isable.value = true
             }
-console.log(graCode.value,newgraCode,GraphicCode.value?.length)
-             if (!fetchSmSed.value && graCode.value.length === GraphicCode.value?.length) {
+console.log(graCode.value,newgraCode,graphicCode.value?.length)
+             if (!fetchSmSed.value && graCode.value.length === graphicCode.value?.length) {
 
         console.log('2')
                 await fetchSmSandCaptcha()

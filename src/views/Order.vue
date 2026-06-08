@@ -39,12 +39,12 @@
     <div class="product-up">
       <img :src="orderData?.sku.imgUrl">
       <div class="product-info">
-        <div class="title">{{ orderData?.goodsInfo[0].seatExtInfo.filmName }}({{ orderData?.goodsInfo[0].goodsName }})
+        <div class="title">{{ orderData?.goodsInfo[0]?.seatExtInfo.filmName }}({{ orderData?.goodsInfo[0]?.goodsName }})
         </div>
         <div>{{ formattedEndDate }}</div>
         <div class="address">{{ orderData?.cinemaInfo.name }}</div>
-        <div class="hall">{{ orderData?.goodsInfo[0].seatExtInfo.hallName + '(' + orderData?.goodsInfo[0].goodsCount +
-          '张) ' + orderData?.goodsInfo[0].seatExtInfo.sectionName }}</div>
+        <div class="hall">{{ orderData?.goodsInfo[0]?.seatExtInfo.hallName + '(' + orderData?.goodsInfo[0]?.goodsCount +
+          '张) ' + orderData?.goodsInfo[0]?.seatExtInfo.sectionName }}</div>
         <div class="seats">{{ formatseats }}</div>
       </div>
     </div>
@@ -90,70 +90,71 @@ import { ref, onBeforeMount, onMounted, computed } from 'vue'
 import { http } from '@/util/tools';
 import { useRoute, useRouter } from 'vue-router';
 import Myheader from '@/components/Myheader.vue';
-type OrderData = {
-  userId: number,
-  orderId: string,
-  mobile: string,
-  totalPrice: number,
-  orderStatus: number,
-  isComplete: number,
-  payOrderId: string,
-  endPayTime: number,
-  createdAt: number,
-  cinemaInfo: {
-    cinemaId: number,
-    name: string,
-    tel: string,
-    address: string,
-    gps: string
-  },
-  goodsInfo: [{
-    endDate: number,
-    goodsCount: number,
-    goodsId: number,
-    goodsName: string,
-    goodsType: number,
-    startDate: number,
-    seatExtInfo: {
-      hallName: string,
-      filmName: string,
-      seats: string,
-      sectionName: string,
-      price: number,
-    }
-  }]
-  sku: {
-    imgUrl: string,
-    skuId: number,
-    count: number,
-    price: number,
-  }
-}
-type skus = {
-  list: [{
-    deliveryAttr: [],
-    groupType: number,
-    productType: number,
-    skuId: number,
-  }]
+import type{ OrderData,SkuExtend,PayWayItem } from '@/types';
+// type OrderData = {
+//   userId: number,
+//   orderId: string,
+//   mobile: string,
+//   totalPrice: number,
+//   orderStatus: number,
+//   isComplete: number,
+//   payOrderId: string,
+//   endPayTime: number,
+//   createdAt: number,
+//   cinemaInfo: {
+//     cinemaId: number,
+//     name: string,
+//     tel: string,
+//     address: string,
+//     gps: string
+//   },
+//   goodsInfo: [{
+//     endDate: number,
+//     goodsCount: number,
+//     goodsId: number,
+//     goodsName: string,
+//     goodsType: number,
+//     startDate: number,
+//     seatExtInfo: {
+//       hallName: string,
+//       filmName: string,
+//       seats: string,
+//       sectionName: string,
+//       price: number,
+//     }
+//   }]
+//   sku: {
+//     imgUrl: string,
+//     skuId: number,
+//     count: number,
+//     price: number,
+//   }
+// }
+// type sku_extend = {
+//   list: [{
+//     deliveryAttr: [],
+//     groupType: number,
+//     productType: number,
+//     skuId: number,
+//   }]
 
-}
-type payWayitem = {
-  payType: number,
-  payDisplayName: string,
-  payDesc: string,
-  payIcon: string,
-  payLabelImg: string,
-  defaultSelected: number,
-  index: number,
-  status: number
+// }
+// type payWayitem = {
+//   payType: number,
+//   payDisplayName: string,
+//   payDesc: string,
+//   payIcon: string,
+//   payLabelImg: string,
+//   defaultSelected: number,
+//   index: number,
+//   status: number
 
-}
+// }
 
 
 const orderData = ref<OrderData | null>(null)
-const skus = ref<skus | null>(null)
-const payWay = ref<payWayitem[] | null>(null)
+const skus = ref<SkuExtend | null>(null)
+const payWay = ref<PayWayItem[] | null>(null)
 const preOrderId = ref('')
 const total = ref(0)
 const availableAmount = ref(0)
@@ -241,8 +242,8 @@ const validateMobile = (phone: string, showErrorMessage = true): boolean => {
   return true;
 };
 const formatseats = computed(() => {
-  const price = (orderData.value?.goodsInfo[0].seatExtInfo.price ?? 0) / 100
-  const str = orderData.value?.goodsInfo[0].seatExtInfo.seats
+  const price = (orderData.value?.goodsInfo[0]?.seatExtInfo.price ?? 0) / 100
+  const str = orderData.value?.goodsInfo[0]?.seatExtInfo.seats
   if (str) {
     return str.split('|').map((item) => {
       // 操作 item
@@ -253,7 +254,7 @@ const formatseats = computed(() => {
   }
 })
 const formattedEndDate = computed(() => {
-  if (!orderData.value?.goodsInfo[0].startDate) return ''
+  if (!orderData.value?.goodsInfo[0]?.startDate) return ''
   // if (!orderData.value?.createdAt) return ''
   const date = new Date(orderData.value?.goodsInfo[0].startDate * 1000)
   const weekdays = ['星期天', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六']

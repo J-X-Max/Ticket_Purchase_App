@@ -20,6 +20,7 @@ const routes = [
 
     // header: () => import('@/components/Myheader.vue')  // 公共头部组件
     meta: { title: '电影' },
+    //  redirect: '/films/nowplaying',  // 默认重定向
     // 嵌套路由
     children: [
       {
@@ -100,17 +101,23 @@ const routes = [
   {
     path: '/center',
     component: () => import('@/views/Center.vue'), // 懒加载
+    // meta: {
+    //   requiredAuth: true
+    // },
+  },
+  {
+    path: '/center/record',
+    component: () => import('@/views/center/Record.vue'),
     meta: {
       requiredAuth: true
     },
   },
   {
-    path: '/center/record',
-    component: () => import('@/views/center/Record.vue'),
-  },
-  {
     path: '/center/setting',
     component: () => import('@/views/center/Setting.vue'),
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/active/:activeid',
@@ -148,18 +155,31 @@ const routes = [
   {
     path: '/user',
     component: () => import('@/views/center/User.vue'),
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/user/card',
     component: () => import('@/views/center/Usercard.vue'),
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/user/balance',
     component: () => import('@/views/center/Userbalance.vue'),
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/user/order',
     component: () => import('@/views/center/Userorder.vue'),
+    
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/user/order/:payorderid',
@@ -168,6 +188,10 @@ const routes = [
   {
     path: '/user/redPacket',
     component: () => import('@/views/center/UserredPacket.vue'),
+
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/user/reset-password',
@@ -184,6 +208,10 @@ const routes = [
   {
     path: '/help',
     component: () => import('@/views/center/Help.vue'),
+
+    meta: {
+      requiredAuth: true
+    },
   },
   {
     path: '/help/1',
@@ -224,7 +252,8 @@ const router = createRouter({
 //     window.history.pushState(null, '', '/films/nowplaying')
 //   }
 // })
-router.beforeEach(async (to, _, next) => {
+router.beforeEach((to, _, next) => {
+    // to.meta.from = from.fullPath;
   // if (history.state.back === null) {
   //   router.push('/films')
   //   console.log('1')
@@ -236,7 +265,7 @@ router.beforeEach(async (to, _, next) => {
 // router.push('/films')
 //  } 
     // console.log(to)
-  let isAuthenticated = await localStorage.getItem("token")
+  let isAuthenticated = localStorage.getItem("token")
 
   // console.log(to.fullPath)
   // var arr = ['/center','/card']
@@ -246,6 +275,7 @@ router.beforeEach(async (to, _, next) => {
       path: '/login',
       query: {
         redirect: to.fullPath,
+        // redirect: '/center'
       }
     })
   } else {

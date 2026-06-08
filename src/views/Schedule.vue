@@ -131,74 +131,75 @@ import { useRoute, useRouter } from 'vue-router';
 import { ref, onBeforeMount, computed, nextTick, onBeforeUnmount, onMounted } from 'vue';
 import { Icon as vanIcon, Popup as vanPopup, showToast } from 'vant';
 import useCinemaStore from '@/store/cinemaStore';
-type seatItem = {
-  columnId: string;
-  columnNum: string;
-  coupleType: number;
-  isBroken: boolean;
-  isOccupied: boolean;
-  offerSeatId: string;
-  rowId: string;
-  rowNum: string;
-  sectionId: string;
-  sectionName: string;
-}
-type seat = {
-  height: number,
-  width: number,
-  scheduleId: number,
-  seats: seatItem[]
-}
-type sche = {
-  maxSeatsCount: number,
-  sectionPrices: sectionPrices_item[]
-  showAt: number,
-  endAt: number,
-  imagery: string,
-  cinema: {
-    cinemaId: number,
-    name: string,
-    notice: string,
-  }
-  film: {
-    filmId: number,
-    name: string,
-    language: string,
-  }
-  hall: {
-    hallId: string,
-    name: string,
-  }
-}
-type sectionPrices_item = {
-  price: number,
-  sectionId: string,
-}
-type sches = {
-  advanceStopMins: number,
-  showAt: number,
-  imagery: string,
-  filmLanguage: string,
-  salePrice: number,
-  scheduleId: number,
-}
-type item = {
-  icon: string;
-  price: number;
-  iconseat?: string;
-}
+import  type {Schedule,ScheduleDetail,ProcessedSeat,SeatingChart,SeatItem,SectionIconMap} from '@/types'
+// type seatItem = {
+//   columnId: string;
+//   columnNum: string;
+//   coupleType: number;
+//   isBroken: boolean;
+//   isOccupied: boolean;
+//   offerSeatId: string;
+//   rowId: string;
+//   rowNum: string;
+//   sectionId: string;
+//   sectionName: string;
+// }
+// type seat = {
+//   height: number,
+//   width: number,
+//   scheduleId: number,
+//   seats: seatItem[]
+// }
+// type sche = {
+//   maxSeatsCount: number,
+//   sectionPrices: sectionPrices_item[]
+//   showAt: number,
+//   endAt: number,
+//   imagery: string,
+//   cinema: {
+//     cinemaId: number,
+//     name: string,
+//     notice: string,
+//   }
+//   film: {
+//     filmId: number,
+//     name: string,
+//     language: string,
+//   }
+//   hall: {
+//     hallId: string,
+//     name: string,
+//   }
+// }
+// type sectionPrices_item = {
+//   price: number,
+//   sectionId: string,
+// }
+// type sches = {
+//   advanceStopMins: number,
+//   showAt: number,
+//   imagery: string,
+//   filmLanguage: string,
+//   salePrice: number,
+//   scheduleId: number,
+// }
+// type item = {
+//   icon: string;
+//   price: number;
+//   iconseat?: string;
+// }
 
-type ProcessedSeat = seatItem & {
-  colSpan: number;
-  isCouple: boolean;
-  partnerId?: string;
-  partnerColumnNum?: string; // 右座的列号，用于显示
-};
-type SectionIconMap = {
-  isBroken: item;
-  isOccupied: item;
-  [key: string]: item; // 其他动态键
-};
+// type ProcessedSeat = seatItem & {
+//   colSpan: number;
+//   isCouple: boolean;
+//   partnerId?: string;
+//   partnerColumnNum?: string; // 右座的列号，用于显示
+// };
+// type SectionIconMap = {
+//   isBroken: item;
+//   isOccupied: item;
+//   [key: string]: item; // 其他动态键
+// };
 const msg = ref('')
 const showmsgPopup = ref(false)
 const cancelorderPopup = ref(false) 
@@ -220,9 +221,9 @@ let timer: number | null = null;
 const noticePopup = ref(false)
 const show = ref<HTMLElement | null>(null)
 const route = useRoute();
-const seatingChart = ref<seat | null>(null)
-const schedule = ref<sche | null>(null)
-const schedules = ref<sches[] | null>(null)
+const seatingChart = ref<SeatingChart | null>(null)
+const schedule = ref<ScheduleDetail | null>(null)
+const schedules = ref<Schedule[] | null>(null)
 const mapScale = ref(1);               // 当前缩放比例
 const initialScale = ref(); // 初始缩放比例
 const offsetX = ref(0);  // 当前 X 轴偏移量（像素）
@@ -277,7 +278,7 @@ const rowId_set = computed<Set<String>>(() => {
 })
 const processedSeats = computed<ProcessedSeat[]>(() => {
   if (!seatingChart.value) return [];
-  const rows = new Map<number, seatItem[]>();
+  const rows = new Map<number, SeatItem[]>();
   // 按行分组
   seatingChart.value.seats.forEach(seat => {
     const row = Number(seat.rowNum);
@@ -383,7 +384,7 @@ const getSeatIcon = (seat: ProcessedSeat) => {
   }
   return `#icon-${sectionIcon?.icon}`;
 };
-const isScheduleSoldOut = (schedule: sches) => {
+const isScheduleSoldOut = (schedule: Schedule) => {
   const stopTime = schedule.showAt - schedule.advanceStopMins * 60;
   return now.value >= stopTime;
 }
@@ -677,7 +678,7 @@ const countmoney = computed(() => {
     .toFixed(2);
 });
 
-const toggleschedule = (sche: sches, index: number) => {
+const toggleschedule = (sche: Schedule, index: number) => {
   // 如果点击的是当前已高亮的场次，不做任何操作
   if (currentScheduleId.value === sche.scheduleId) return;
   // 更新高亮

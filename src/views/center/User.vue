@@ -52,16 +52,17 @@ import { ref, onBeforeMount, computed, watch,nextTick  } from 'vue'
 import { http } from '@/util/tools'
 import Myheader from '@/components/Myheader.vue';
 import useTabbarStore from '@/store/tabbarStore';
-type user = {
-    headIcon: string,
-    nickName: string,
-    gender: number,
-    birthday: string
+import type { User } from '@/types'
+// type user = {
+//     headIcon: string,
+//     nickName: string,
+//     gender: number,
+//     birthday: string
 
-}
+// }
 const tabbarStore = useTabbarStore()
 const changeuser = ref(true)
-const userInfo = ref<user | null>(null);
+const userInfo = ref<User | null>(null);
 const Nickname = ref('')
 const nicknameInput = ref<HTMLInputElement | null>(null);
 const genderSelected = ref<string[]>(['1']);

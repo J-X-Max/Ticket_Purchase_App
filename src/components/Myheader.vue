@@ -95,7 +95,7 @@ const handleLeftClick = () => {
 
     } else if (props.preventDefaultBack && props.leftType === 'city') {
         router.push('/city')
-    } else {
+    }else {
         emit('back')
     }
 }

@@ -10,7 +10,7 @@
     
                     <template #desc>
                         <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
-                        <div class="actor-style">主演: {{item.actors.map(a => a.name).join(' ')}}</div>
+                        <div class="actor-style">主演: {{item.actors?.map(a => a.name).join(' ') ?? '暂无' }}</div>
                         <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}</div>
                     </template>
                     <template #footer>

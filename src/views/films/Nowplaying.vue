@@ -1,25 +1,25 @@
 <template>
-        <van-list  v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-            class="list-container " offset="10">
-            <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
-                <van-card :thumb="item.poster">
-                    <template #title>
-                        <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
-                        }}</button></div>
-                    </template>
-    
-                    <template #desc>
-                        <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
-                        <div class="actor-style">主演: {{item.actors?.map(a => a.name).join(' ') ?? '暂无' }}</div>
-                        <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}</div>
-                    </template>
-                    <template #footer>
-                        <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
-                    </template>
-                </van-card>
-            </router-link>
-    
-        </van-list>
+    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+        class="list-container " offset="10">
+        <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
+            <van-card :thumb="item.poster">
+                <template #title>
+                    <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+                            }}</button></div>
+                </template>
+
+                <template #desc>
+                    <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
+                    <div class="actor-style">主演: {{item.actors?.map(a => a.name).join(' ') ?? '暂无'}}</div>
+                    <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}</div>
+                </template>
+                <template #footer>
+                    <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
+                </template>
+            </van-card>
+        </router-link>
+
+    </van-list>
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
@@ -64,12 +64,13 @@ const handleBuy = (filmId: number) => {
     router.push(`/detail/${filmId}/cinemas`)
 
 }
-const onLoad =
-    // 异步更新数据
-    // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-    async () => {
-       await cityStore.ensureCityReady() 
-        pageNum.value++;
+const onLoad = async () => {
+    if (loading.value || finished.value) return;
+    loading.value = true; // 👈 立刻上锁，防止并发触发
+    pageNum.value++;
+    await cityStore.ensureCityReady();
+    try {
+
         const res = await http({
             url: `/gateway?cityId=${cityStore.cityId}&pageNum=${pageNum.value}&pageSize=10&type=1&k=6151240`,
             headers: {
@@ -78,14 +79,20 @@ const onLoad =
         });
         list.value = [...list.value, ...res.data.data.films];
         // console.log(list.value);
-        loading.value = false;
+        // loading.value = false;
 
         // 数据全部加载完成
         if (list.value.length >= res.data.data.total) {
             finished.value = true;
         }
+    } catch (e) {
+        pageNum.value--;
+        console.error(e);
+    } finally {
+        loading.value = false;
+    }
 
-    };
+};
 
 
 // const onLoad = async () => {
@@ -118,7 +125,6 @@ tabbarStore.change(true)
 
 
 <style scoped lang="scss">
-
 .film-link {
     text-decoration: none;
     color: inherit;

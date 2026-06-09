@@ -1,7 +1,7 @@
 <template>
     <div v-if="cityStore.isReady">
         <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-        class="list-container " offset="10">
+        class="list-container " offset="300">
         <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
             <van-card :thumb="item.poster">
                 <template #title>

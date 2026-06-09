@@ -1,5 +1,6 @@
 <template>
-    <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+    <div v-if="cityStore.isReady">
+        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
         class="list-container " offset="10">
         <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
             <van-card :thumb="item.poster">
@@ -18,15 +19,15 @@
                 </template>
             </van-card>
         </router-link>
-
     </van-list>
+    </div>
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
 import useTabbarStore from '@/store/tabbarStore'
-import { ref } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { Card as vanCard, List as vanList, Button as vanButton } from 'vant'
 import type { Items } from '@/types'
 // type Actors =
@@ -64,12 +65,16 @@ const handleBuy = (filmId: number) => {
     router.push(`/detail/${filmId}/cinemas`)
 
 }
+
+onBeforeMount(async () => {
+  await cityStore.ensureCityReady()
+})
 const onLoad = async () => {
-    if ( finished.value) return;
-    console.log('1')
+
+    // console.log(cityStore.isReady)
+    // if (cityStore.isReady === false ) return;
     // loading.value = true; // 👈 立刻上锁，防止并发触发
     pageNum.value++;
-    await cityStore.ensureCityReady();
     try {
 
         const res = await http({
@@ -80,7 +85,7 @@ const onLoad = async () => {
         });
         list.value = [...list.value, ...res.data.data.films];
         // console.log(list.value);
-        // loading.value = false;
+        loading.value = false;
 
         // 数据全部加载完成
         if (list.value.length >= res.data.data.total) {
@@ -89,10 +94,7 @@ const onLoad = async () => {
     } catch (e) {
         pageNum.value--;
         console.error(e);
-    } finally {
-        loading.value = false;
-    }
-
+    } 
 };
 
 
@@ -120,6 +122,12 @@ const onLoad = async () => {
 //         loading.value = false;
 //     }
 // };
+// onBeforeMount(async()=>{
+//     await cityStore.ensureCityReady();
+// })
+
+
+
 tabbarStore.change(true)
 
 </script>

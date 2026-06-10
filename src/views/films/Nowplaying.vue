@@ -30,7 +30,7 @@ import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
 import useTabbarStore from '@/store/tabbarStore'
-import { onBeforeMount, ref, watch } from 'vue'
+import { onBeforeMount, ref } from 'vue'
 import { Card as vanCard, List as vanList, Button as vanButton, PullRefresh as vanPullRefresh } from 'vant'
 import type { Items } from '@/types'
 // type Actors =
@@ -81,17 +81,11 @@ const onRefresh = () => {
     onLoad();
 };
 const onLoad = async () => {
-    console.log('触发 onLoad，当前 loading:', loading.value, 'finished:', finished.value, 'pageNum:', pageNum.value,'error:', error.value);
-    // if (loading.value || finished.value || error.value) return;
-    // console.log('后')
     if (refreshing.value) {
         list.value = [];
         pageNum.value = 0;
         refreshing.value = false;
     }
-    // console.log(cityStore.isReady)
-    // if (cityStore.isReady === false ) return;
-    // loading.value = true; // 👈 立刻上锁，防止并发触发
     loading.value = true;
     error.value = false;
     pageNum.value++;
@@ -115,8 +109,6 @@ const onLoad = async () => {
         console.error(e);
     } finally {
         loading.value = false;
-
-    console.log('触发 onLoad，当前 loading:', loading.value, 'finished:', finished.value, 'pageNum:', pageNum.value,'error:', error.value);
     }
 };
 
@@ -145,10 +137,6 @@ const onLoad = async () => {
 //         loading.value = false;
 //     }
 // };
-watch (() => cityStore.isReady,  (newready, oldready) => {
-   console.log('cityStore.isReady', newready, oldready) 
-})
-
 onBeforeMount(async () => {
     await cityStore.ensureCityReady()
 })

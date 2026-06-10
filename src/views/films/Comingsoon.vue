@@ -1,6 +1,9 @@
 <template>
-        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-            class="list-container " offset="10">
+
+    <div v-if="cityStore.isReady">
+  <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+            <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+                class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载">
             <router-link :to="'/detail/' + item.filmId" v-for="item, index in list" :key="item.filmId"
                 class="film-link">
                 <van-card :thumb="item.poster">
@@ -19,13 +22,15 @@
                 </van-card>
             </router-link>
         </van-list>
+        </van-pull-refresh>
+    </div>
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
-import { ref, computed } from 'vue'
-import { Card as vanCard, List as vanList, Button as vanButton } from 'vant'
+import { ref, computed,onBeforeMount } from 'vue'
+import { Card as vanCard, List as vanList, Button as vanButton,PullRefresh as vanPullRefresh } from 'vant'
 
 import type { Items } from '@/types'
 // type Actor =
@@ -58,6 +63,9 @@ const router = useRouter();
 const cityStore = useCityStore()
 const loading = ref<boolean>(false);
 const finished = ref<boolean>(false);
+
+const refreshing = ref(false);
+const error = ref<boolean>(false);
 const pageNum = ref<number>(0);
 const handleBuy = (filmId: number) => {
     // 跳转到选座页面或其他逻辑，例如 router.push(`/buy/${filmId}`)
@@ -65,11 +73,27 @@ const handleBuy = (filmId: number) => {
     router.push(`/detail/${filmId}/cinemas`)
 
 }
-const onLoad =
-    // 异步更新数据
-    // setTimeout 仅做示例，真实场景中一般为 ajax 请求
-    async () => {
-        pageNum.value++;
+
+const onRefresh = () => {
+    // 清空列表数据
+    refreshing.value = true;
+    finished.value = false;
+    error.value = false;
+    // 将 loading 设置为 true，表示处于加载状态
+    loading.value = true;
+    onLoad();
+};
+const onLoad = async () => {
+    if (refreshing.value) {
+        list.value = [];
+        pageNum.value = 0;
+        refreshing.value = false;
+    }
+    loading.value = true;
+    error.value = false;
+    pageNum.value++;
+    try {
+
         const res = await http({
             url: `/gateway?cityId=${cityStore.cityId}&pageNum=${pageNum.value}&pageSize=10&type=2&k=6151240`,
             headers: {
@@ -77,15 +101,19 @@ const onLoad =
             }
         });
         list.value = [...list.value, ...res.data.data.films];
-        console.log(list.value);
         loading.value = false;
-
         // 数据全部加载完成
         if (list.value.length >= res.data.data.total) {
             finished.value = true;
         }
-
-    };
+    } catch (e) {
+        pageNum.value--;
+        error.value = true;
+        console.error(e);
+    } finally {
+        loading.value = false;
+    }
+};
 const film_date = computed(() => {
     return list.value?.map((item) => {
         const date = new Date(item.premiereAt)
@@ -98,6 +126,9 @@ const film_date = computed(() => {
 }
 
 )
+onBeforeMount(async () => {
+    await cityStore.ensureCityReady()
+})
 </script>
 
 
@@ -108,6 +139,8 @@ const film_date = computed(() => {
     display: block;
 }
 
+.van-pull-refresh{
+overflow:auto;
 .list-container {
     padding: 1vh 1.5vw 0vw;
 
@@ -212,10 +245,6 @@ const film_date = computed(() => {
         }
     }
 
-    /*  .list-content {
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: repeat(3, 100px);
-    } */
+}  
 }
 </style>

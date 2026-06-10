@@ -1,25 +1,28 @@
 <template>
     <div v-if="cityStore.isReady">
-        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-        class="list-container " offset="300">
-        <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
-            <van-card :thumb="item.poster">
-                <template #title>
-                    <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+            <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+                class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载">
+                <router-link :to="'/detail/' + item.filmId" v-for="item in list" :key="item.filmId" class="film-link">
+                    <van-card :thumb="item.poster">
+                        <template #title>
+                            <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
                             }}</button></div>
-                </template>
+                        </template>
 
-                <template #desc>
-                    <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
-                    <div class="actor-style">主演: {{item.actors?.map(a => a.name).join(' ') ?? '暂无'}}</div>
-                    <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}</div>
-                </template>
-                <template #footer>
-                    <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
-                </template>
-            </van-card>
-        </router-link>
-    </van-list>
+                        <template #desc>
+                            <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
+                            <div class="actor-style">主演: {{item.actors?.map(a => a.name).join(' ') ?? '暂无'}}</div>
+                            <div class="time-style">{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : "" }}
+                            </div>
+                        </template>
+                        <template #footer>
+                            <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
+                        </template>
+                    </van-card>
+                </router-link>
+            </van-list>
+        </van-pull-refresh>
     </div>
 </template>
 <script setup lang="ts">
@@ -27,8 +30,8 @@ import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
 import useTabbarStore from '@/store/tabbarStore'
-import { onBeforeMount, ref } from 'vue'
-import { Card as vanCard, List as vanList, Button as vanButton } from 'vant'
+import { onBeforeMount, ref, watch } from 'vue'
+import { Card as vanCard, List as vanList, Button as vanButton, PullRefresh as vanPullRefresh } from 'vant'
 import type { Items } from '@/types'
 // type Actors =
 //     {
@@ -58,7 +61,9 @@ const router = useRouter();
 const cityStore = useCityStore()
 const tabbarStore = useTabbarStore();
 const loading = ref<boolean>(false);
+const error = ref<boolean>(false);
 const finished = ref<boolean>(false);
+const refreshing = ref(false);
 const pageNum = ref<number>(0);
 const handleBuy = (filmId: number) => {
     // 跳转到选座页面或其他逻辑，例如 router.push(`/buy/${filmId}`)
@@ -66,14 +71,29 @@ const handleBuy = (filmId: number) => {
 
 }
 
-onBeforeMount(async () => {
-  await cityStore.ensureCityReady()
-})
+const onRefresh = () => {
+    // 清空列表数据
+    refreshing.value = true;
+    finished.value = false;
+    error.value = false;
+    // 将 loading 设置为 true，表示处于加载状态
+    loading.value = true;
+    onLoad();
+};
 const onLoad = async () => {
-
+    console.log('触发 onLoad，当前 loading:', loading.value, 'finished:', finished.value, 'pageNum:', pageNum.value,'error:', error.value);
+    // if (loading.value || finished.value || error.value) return;
+    // console.log('后')
+    if (refreshing.value) {
+        list.value = [];
+        pageNum.value = 0;
+        refreshing.value = false;
+    }
     // console.log(cityStore.isReady)
     // if (cityStore.isReady === false ) return;
     // loading.value = true; // 👈 立刻上锁，防止并发触发
+    loading.value = true;
+    error.value = false;
     pageNum.value++;
     try {
 
@@ -84,17 +104,20 @@ const onLoad = async () => {
             }
         });
         list.value = [...list.value, ...res.data.data.films];
-        // console.log(list.value);
         loading.value = false;
-
         // 数据全部加载完成
         if (list.value.length >= res.data.data.total) {
             finished.value = true;
         }
     } catch (e) {
         pageNum.value--;
+        error.value = true;
         console.error(e);
-    } 
+    } finally {
+        loading.value = false;
+
+    console.log('触发 onLoad，当前 loading:', loading.value, 'finished:', finished.value, 'pageNum:', pageNum.value,'error:', error.value);
+    }
 };
 
 
@@ -122,10 +145,13 @@ const onLoad = async () => {
 //         loading.value = false;
 //     }
 // };
-// onBeforeMount(async()=>{
-//     await cityStore.ensureCityReady();
-// })
+watch (() => cityStore.isReady,  (newready, oldready) => {
+   console.log('cityStore.isReady', newready, oldready) 
+})
 
+onBeforeMount(async () => {
+    await cityStore.ensureCityReady()
+})
 
 
 tabbarStore.change(true)
@@ -139,7 +165,8 @@ tabbarStore.change(true)
     color: inherit;
     display: block;
 }
-
+.van-pull-refresh{
+overflow:auto;
 .list-container {
     padding: 1vh 1.5vw 0vw;
 
@@ -252,5 +279,6 @@ tabbarStore.change(true)
         grid-template-columns: auto;
         grid-template-rows: repeat(3, 100px);
     } */
+}
 }
 </style>

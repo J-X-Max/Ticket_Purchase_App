@@ -3,7 +3,7 @@
     <div class="banner">
         <div @click="gotouser" class="headPortrait-box">
             <div v-if="isAuthenticated === null" class="img-box">
-                <img :src="`../../db/public/images/Profile_picture/image.png`">
+                <img :src="`/Profile_picture/image.png`">
             </div>
             <div v-if="userInfo?.headIcon" class="img-box">
                 <img :src="userInfo?.headIcon">

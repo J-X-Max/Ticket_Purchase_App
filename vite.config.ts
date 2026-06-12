@@ -3,7 +3,7 @@ import vue from '@vitejs/plugin-vue'
 import path from 'path'
 // https://vite.dev/config/
 export default defineConfig({
-  base: './',   // 关键！所有资源用相对路径，适配任何部署子目录
+  base: './',   // 关键！所有资源用相对路径，适配任何部署子目录,./相对路径表示从当前目录寻找,/绝对路径表示从根目录寻找
   plugins: [vue()],
   css: {
     preprocessorOptions: {

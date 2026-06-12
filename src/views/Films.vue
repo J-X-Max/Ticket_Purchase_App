@@ -16,9 +16,9 @@
         </ul>
     </div>
     <router-view class="list" v-slot="{ Component }">
-    <!-- <router-view class="list" > -->
+        <!-- <router-view class="list" > -->
         <!-- <transition name="fade" mode="default" > -->
-            <component v-if="Component" :is="Component" />
+        <component v-if="Component" :is="Component" />
         <!-- </transition> -->
     </router-view>
 </template>
@@ -84,10 +84,12 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 
 // }
 @media (orientation: landscape) {
-  .my-swipe {
-    display: none;               /* 横屏时隐藏侧栏 */
-  }
+    .my-swipe {
+        display: none;
+        /* 横屏时隐藏侧栏 */
+    }
 }
+
 .my-swipe {
     background-color: rgb(255, 255, 255);
     max-height: 30%;
@@ -118,7 +120,8 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
     text-align: center;
     // max-height: 10%;
     // height: 8%;
-height: clamp(38px, 29.5px + 1.5rem, 86px);
+    height: clamp(38px, 18px + 1.5rem, 86px);
+
     .options {
         flex: 1;
         display: flex;

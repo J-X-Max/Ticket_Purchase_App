@@ -1,27 +1,27 @@
 <template>
 
     <div v-if="cityStore.isReady">
-  <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
+        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
             <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
                 class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载">
-            <router-link :to="'/detail/' + item.filmId" v-for="item, index in list" :key="item.filmId"
-                class="film-link">
-                <van-card :thumb="item.poster">
-                    <template #title>
-                        <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
-                                }}</button></div>
-                    </template>
+                <router-link :to="'/detail/' + item.filmId" v-for="item, index in list" :key="item.filmId"
+                    class="film-link">
+                    <van-card :thumb="item.poster">
+                        <template #title>
+                            <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+                            }}</button></div>
+                        </template>
 
-                    <template #desc>
-                        <div class="actor-style">主演: {{item.actors.map(a => a.name).join(' ')}}</div>
-                        <div class="time-style">上映日期:{{ film_date[index] }}</div>
-                    </template>
-                    <template #footer>
-                        <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">预购</van-button>
-                    </template>
-                </van-card>
-            </router-link>
-        </van-list>
+                        <template #desc>
+                            <div class="actor-style"><span>主演: {{item.actors.map(a => a.name).join(' ')}}</span></div>
+                            <div class="time-style"><span>上映日期:{{ film_date[index] }}</span></div>
+                        </template>
+                        <template #footer>
+                            <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">预购</van-button>
+                        </template>
+                    </van-card>
+                </router-link>
+            </van-list>
         </van-pull-refresh>
     </div>
 </template>
@@ -29,8 +29,8 @@
 import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
-import { ref, computed,onBeforeMount } from 'vue'
-import { Card as vanCard, List as vanList, Button as vanButton,PullRefresh as vanPullRefresh } from 'vant'
+import { ref, computed, onBeforeMount } from 'vue'
+import { Card as vanCard, List as vanList, Button as vanButton, PullRefresh as vanPullRefresh } from 'vant'
 
 import type { Items } from '@/types'
 // type Actor =
@@ -139,112 +139,151 @@ onBeforeMount(async () => {
     display: block;
 }
 
-.van-pull-refresh{
-overflow:auto;
-.list-container {
-    padding: 1vh 1.5vw 0vw;
+.van-pull-refresh {
+    overflow: auto;
 
-    .van-card {
-        font-size: 1rem;
-        height: 17vh;
-        padding-left: .5625rem;
-        display: flex;
+    .list-container {
+        padding: 1vh 1.5vw 0vw;
 
-        :deep(.van-card__header) {
-            //深度选择器下的样式不用再用深度选择了
-            display: flex;
-            align-items: stretch;
-            height: 100%;
-            width: 40%;
-            flex-grow: 3;
-            flex-shrink: 0;
-            flex-basis: auto;
-
-            .van-card__thumb {
-                width: 11vh;
-                height: 100%;
-                // margin-right: .625rem;
-            }
-
-            .van-card__content {
-                font-size: 1.2rem;
-                display: flex;
-                justify-content: center;
-            }
-
-            .van-card__title {
-                white-space: nowrap;
-                line-height: 1;
-                margin-top: 0.2rem;
-                display: flex;
-                align-items: center;
-                margin-bottom: 0.475rem;
-
-                .button-style {
-                    color: #fff;
-                    padding: 0 .1875rem;
-                    font-size: 0.6rem;
-                    background-color: #d2d6dc;
-                    border-radius: .25rem;
-                    margin-left: .1875rem;
-                    border-width: 0.15rem;
-                }
-            }
-
-            .audience-rating {
-                font-size: 1rem;
-                display: flex;
-                align-items: center;
-                line-height: 1.2;
-
-                .grade {
-                    color: rgb(255, 150, 112);
-                    font-weight: 600;
-                    font-size: 0.9rem;
-                    margin-left: 0.1875rem;
-
-                }
-            }
-
-            .actor-style {
-                font-size: 1rem;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .time-style {
-                font-size: 1rem;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-        }
-    }
-
-
-    :deep(.van-card__footer) {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        flex-grow: 1;
-        flex-shrink: 0;
-        flex-basis: auto;
-
-        .van-button--normal {
-            padding: 0px 0px;
-        }
-
-        .shopping {
-            border: 0.1875rem solid orange;
-            color: orange;
+        .van-card {
             font-size: 1rem;
-            width: 3.175rem;
-            height: 1.5375rem;
-            text-align: center;
-        }
-    }
+            // height: 17vh;
+            padding-left: .5625rem;
+            display: flex;
+            border-bottom: 1px solid #e8e8e8;
 
-}  
+            :deep(.van-card__header) {
+                //深度选择器下的样式不用再用深度选择了
+                display: flex;
+                align-items: stretch;
+                height: 100%;
+                width: 40%;
+                flex-grow: 1;
+                flex-shrink: 0;
+                flex-basis: auto;
+
+                .van-card__thumb {
+                    width: clamp(40px,1px + 3rem, 140px);
+                    height: 100%;
+                    // margin-right: .625rem;
+                }
+
+                .van-card__content {
+                    font-size: 0.7rem;
+                    justify-content: stretch;
+                    min-height: auto;
+
+                    >div:first-child {
+                        // height: 100%;
+                        flex: 1;
+                        display: flex;
+                        flex-direction: column;
+                        align-items: stretch;
+                        row-gap: 4px;
+                        div {
+                            flex: 1;
+                            display: flex;
+                            align-items: center;
+                            line-height: 1;
+                        }
+                    }
+
+
+                }
+
+                .van-card__title {
+                    // white-space: nowrap;
+                    // line-height: 1;
+                    // margin-top: 0.2rem;
+                    // display: flex;
+                    // align-items: center;
+                    // margin-bottom: 0.475rem;
+                    font-size: .9rem;
+                    max-height: none;
+                    // font-size: ;
+                    white-space: nowrap;
+                    flex: 2 !important;
+                    max-width: none;
+
+                    .button-style {
+                        color: #fff;
+                        padding: 0 .1875rem;
+                        font-size: 0.6rem;
+                        background-color: #d2d6dc;
+                        border-radius: .25rem;
+                        margin-left: .1875rem;
+                        border-width: 0.15rem;
+                    }
+                }
+
+                // .audience-rating {
+                //     // font-size: 1rem;
+                //     // display: flex;
+                //     // align-items: center;
+                //     // line-height: 1.2;
+
+                //     .grade {
+                //         color: rgb(255, 150, 112);
+                //         font-weight: 600;
+                //         font-size: 0.7rem;
+                //         margin-left: 0.1875rem;
+
+                //     }
+                // }
+
+                .actor-style {
+
+                    // font-size: 1rem;
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                    span {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                    }
+                }
+
+                .time-style {
+                    span {
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+
+                    }
+
+                    // font-size: 1rem;
+                    // white-space: nowrap;
+                    // overflow: hidden;
+                    // text-overflow: ellipsis;
+                }
+            }
+        }
+
+
+        :deep(.van-card__footer) {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            flex-grow: 0;
+            flex-shrink: 1;
+            flex-basis: 0%;
+
+            .van-button--normal {
+                padding: 0px 0px;
+            }
+
+            .shopping {
+                border: 0.1875rem solid orange;
+                color: orange;
+                font-size: 1rem;
+                width: 3.175rem;
+                height: 1.5375rem;
+                text-align: center;
+            }
+        }
+
+    }
 }
 </style>

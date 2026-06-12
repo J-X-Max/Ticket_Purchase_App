@@ -131,7 +131,7 @@ watch(() => cityStore.locationError, (newVal) => {
 }
 
 :deep(.van-tabbar) {
-  height: 7.5vh;
+  height: auto;
 
   .van-tabbar-item__text {
     height: 100%;

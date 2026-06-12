@@ -83,7 +83,11 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 //     }
 
 // }
-
+@media (orientation: landscape) {
+  .my-swipe {
+    display: none;               /* 横屏时隐藏侧栏 */
+  }
+}
 .my-swipe {
     background-color: rgb(255, 255, 255);
     max-height: 30%;

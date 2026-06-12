@@ -11,7 +11,8 @@ ul {
 }
 
 html {
-  font-size: 16px; // 1rem = 16px
+  // font-size: 16px; // 1rem = 16px
+  font-size: clamp(16px, 4vw, 20px); // 移动端舒适，横屏也不超过20px
   scroll-behavior: smooth; // 平滑滚动
   -webkit-text-size-adjust: 100%; // 防止iOS调整字体大小
   -webkit-font-smoothing: antialiased; // 字体抗锯齿
@@ -30,43 +31,42 @@ body {
   overflow-x: hidden;
   position: relative;
 }
-
 // ====== 响应式字体大小  设置根节点字体大小 ======  
 // 1400px
-@media (max-width: $breakpoint-max) {
-  html {
-    font-size: 35px; 
-  }
-}
-// 1200px;   
-@media (max-width: $breakpoint-xl ) {
-  html {
-    font-size: 30px ; 
-  }
-}
+// @media (max-width: $breakpoint-max) {
+//   html {
+//     font-size: 35px; 
+//   }
+// }
+// // 1200px;   
+// @media (max-width: $breakpoint-xl ) {
+//   html {
+//     font-size: 30px ; 
+//   }
+// }
 
-// 992px; 
-@media (max-width: $breakpoint-lg) {
-  html {
-    font-size: 25px;  // 中等屏幕下稍微减小基准字体
-  }
-}
+// // 992px; 
+// @media (max-width: $breakpoint-lg) {
+//   html {
+//     font-size: 25px;  // 中等屏幕下稍微减小基准字体
+//   }
+// }
 
-// 768px
-@media (max-width: $breakpoint-md) {
-  html {
-     // 中等屏幕下稍微减小基准字体
-   font-size: 20px ; 
+// // 768px
+// @media (max-width: $breakpoint-md) {
+//   html {
+//      // 中等屏幕下稍微减小基准字体
+//    font-size: 20px ; 
     
-  }
-}
+//   }
+// }
 
-// 576px
-@media (max-width: $breakpoint-sm){
-  html {
-    font-size: 16px ; // 小屏幕下进一步减小
-  }
-}
+// // 576px
+// @media (max-width: $breakpoint-sm){
+//   html {
+//     font-size: 16px ; // 小屏幕下进一步减小
+//   }
+// }
 
 // ====== 排版元素重置 ======
 h1,

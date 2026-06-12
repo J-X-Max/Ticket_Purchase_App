@@ -2,11 +2,11 @@
     <!-- <template v-if="userInfo && special"> -->
     <div class="banner">
         <div @click="gotouser" class="headPortrait-box">
-            <div v-if="isAuthenticated===null" class="img-box">
-                <img  :src="`../../db/public/images/Profile_picture/image.png`">
+            <div v-if="isAuthenticated === null" class="img-box">
+                <img :src="`../../db/public/images/Profile_picture/image.png`">
             </div>
-             <div v-if="userInfo?.headIcon" class="img-box">
-                <img  :src="userInfo?.headIcon">
+            <div v-if="userInfo?.headIcon" class="img-box">
+                <img :src="userInfo?.headIcon">
             </div>
             <strong>{{ nickName }}</strong>
         </div>
@@ -55,7 +55,7 @@ import type { User, Spe } from '@/types'
 const tabbarStore = useTabbarStore();
 const userInfo = ref<User | null>(null);
 const special = ref<Spe | null>(null);
-const nickName = ref<string|undefined>()
+const nickName = ref<string | undefined>()
 const isAuthenticated = localStorage.getItem("token")
 const router = useRouter();
 const gotouser = () => {
@@ -70,7 +70,7 @@ const gotouserbalance = () => {
 tabbarStore.isTabbarShow = true;
 onBeforeMount(async () => {
     if (isAuthenticated === null) {
-      nickName.value = '立即登录'
+        nickName.value = '立即登录'
         return
 
     }
@@ -126,31 +126,42 @@ onBeforeMount(async () => {
 
 </script>
 <style lang="scss" scoped>
+// @media (orientation: landscape) {
+//         strong {
+//             font-size:.7rem!important;
+//             // flex: 5;
+//         }
+// }
+
+// @media (orientation: portrait) {
+
 .banner {
     width: 100%;
-    height: 30vh;
+    height: clamp(20%, 1px + 10rem, 30%);
     background: url(https://assets.maizuo.com/h5/v5/public/app/img/bg.a5bdd690.png) no-repeat center/cover #ffffff;
     position: relative;
 
     .headPortrait-box {
+        width: 40%;
+        height: 30%;
         position: absolute;
-        left: 4%;
-        top: 37%;
+        left: 3%;
+        top: 50%;
         display: flex;
-        column-gap: 1rem;
+        column-gap: .5rem;
         align-items: center;
 
         .img-box {
-            width: 20vw;
+            // width: 20vw;
             border-radius: 50%;
             background-color: #f0f0f000; // 加载时背景色
             border: 3px solid #ffffff;
-
-            img {
+            // flex:2;
+             img {
                 border-radius: 50%;
                 object-fit: fill;
                 object-position: center center;
-                transform: scale(1.1);
+                transform: scale(1.3);
                 width: 100%;
                 height: 100%;
             }
@@ -158,7 +169,8 @@ onBeforeMount(async () => {
 
         strong {
             color: #ffffff;
-            font-size: 1rem;
+            font-size: .9rem;
+            // flex: 5;
         }
     }
 }
@@ -166,7 +178,7 @@ onBeforeMount(async () => {
 .couponCount-box {
     background-color: #ffffff;
     width: 100%;
-    height: 10vh;
+    // height: 10vh;
     margin-bottom: 10px;
     display: flex;
 
@@ -182,7 +194,7 @@ onBeforeMount(async () => {
             flex-direction: column;
 
             span {
-                font-size: 1.1rem;
+                font-size: 1rem;
                 flex: 1;
             }
 
@@ -195,11 +207,12 @@ onBeforeMount(async () => {
 }
 
 :deep(.van-cell) {
-    font-size: 1rem;
+    font-size: .9rem;
 
     .van-cell__left-icon,
     .van-cell__right-icon {
-        font-size: 1.3rem;
+        font-size: 1rem;
     }
 }
+// }
 </style>

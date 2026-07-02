@@ -1,9 +1,8 @@
 <template>
- <div class="app">
-
-
+<!-- <div class="page-with-tabbar"> -->
+  <!-- <div class="scroll-area" > -->
   <router-view ></router-view>
-
+  <!-- </div> -->
   <van-tabbar route fixed placeholder v-model="active" active-color="orange" v-show="store.isTabbarShow">
 
     <van-tabbar-item replace to="/films">
@@ -36,7 +35,7 @@
       <van-button type="default" @click="goToCitySelect">确认</van-button>
     </div>
   </van-popup>
- </div>
+  <!-- </div> -->
 </template>
 
 
@@ -87,7 +86,16 @@ watch(() => cityStore.locationError, (newVal) => {
 // })
 </script>
 <style scoped lang="scss">
-
+// .page-with-tabbar {
+  // display: flex;
+  // flex-direction: column;
+  // height: 101vh;           /* 占满视口高度 */
+  // overflow:hidden ;        /* 防止整体滚动 */
+  // .scroll-area {
+  // // flex: 1;                 /* 占据剩余空间，自动撑开 */
+  // // overflow-y: auto;        /* 内部滚动 */
+  // -webkit-overflow-scrolling: touch; /* 平滑滚动，地址栏会正常收起 */
+  // }
 .van-popup {
   display: flex;
   flex-direction: column;

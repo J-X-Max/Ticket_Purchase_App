@@ -76,8 +76,10 @@ const routes = [
   },
   {
     path: '/schedule/:scheduleid/:dateid',
-    component: () => import('@/views/Schedule.vue')
-
+    component: () => import('@/views/Schedule.vue'),
+    meta: {
+      requiredAuth: true
+    }
   },
   {
 
@@ -176,7 +178,7 @@ const routes = [
   {
     path: '/user/order',
     component: () => import('@/views/center/Userorder.vue'),
-    
+
     meta: {
       requiredAuth: true
     },
@@ -253,7 +255,7 @@ const router = createRouter({
 //   }
 // })
 router.beforeEach((to, _, next) => {
-    // to.meta.from = from.fullPath;
+  // to.meta.from = from.fullPath;
   // if (history.state.back === null) {
   //   router.push('/films')
   //   console.log('1')
@@ -261,10 +263,10 @@ router.beforeEach((to, _, next) => {
   //   console.log('2')
   // }
   // console.log(to.matched.length,history.length)
-//  if(to.matched.length === 0){
-// router.push('/films')
-//  } 
-    // console.log(to)
+  //  if(to.matched.length === 0){
+  // router.push('/films')
+  //  } 
+  // console.log(to)
   let isAuthenticated = localStorage.getItem("token")
 
   // console.log(to.fullPath)

@@ -1,4 +1,5 @@
 <template>
+
     <van-swipe class="my-swipe" :autoplay="3000" lazy-render indicator-color="blue">
         <van-swipe-item v-for="image in images" :key="image">
             <img :src="image" />
@@ -6,7 +7,7 @@
     </van-swipe>
 
     <div class="header" ref="headerRef">
-        <!-- <myheader leftType="city" :showSearch="false" v-show="isSticky" /> -->
+        <myheader leftType="city" :showSearch="false" v-show="isSticky" />
         <ul class="options">
             <li v-for="tab in tabs" :key="tab.path">
                 <router-link custom :to="tab.path" v-slot="{ isActive, navigate }">
@@ -15,21 +16,20 @@
             </li>
         </ul>
     </div>
-    <router-view class="list" v-slot="{ Component }">
-        <!-- <router-view class="list" > -->
-        <!-- <transition name="fade" mode="default" > -->
+
+
+    <router-view v-slot="{ Component }">
         <component v-if="Component" :is="Component" />
-        <!-- </transition> -->
     </router-view>
 </template>
 
 <script lang="ts" setup>
-// import { useSticky } from '@/util/tools'
-import { ref, } from 'vue';
+import { useSticky } from '@/util/tools'
+import { ref } from 'vue';
 import { Swipe as vanSwipe, SwipeItem as vanSwipeItem, /* NavBar as vanNavBar, Icon as vanIcon */ } from 'vant';
-// import Myheader from '@/components/Myheader.vue';
+import Myheader from '@/components/Myheader.vue';
 
-// const headerRef = ref<HTMLElement | null>(null);
+const headerRef = ref<HTMLElement | null>(null);
 const tabs = [
     { path: '/films/nowplaying', name: '正在热映' },
     { path: '/films/comingsoon', name: '即将上映' }
@@ -44,11 +44,11 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
 
 
 
-// const { isSticky } = useSticky(() => {
-//     if (!headerRef.value) return false
-//     const rect = headerRef.value.getBoundingClientRect()
-//     return rect.top <= 0 && window.scrollY > 0
-// })
+const { isSticky } = useSticky(() => {
+    if (!headerRef.value) return false
+    const rect = headerRef.value.getBoundingClientRect()
+    return rect.top <= 0 && window.scrollY > 0
+})
 
 
 
@@ -90,6 +90,7 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
     }
 }
 
+
 .my-swipe {
     background-color: rgb(255, 255, 255);
     max-height: 30%;
@@ -114,18 +115,18 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
     z-index: 100;
     background-color: white;
     display: flex;
-    align-items: center;
-    // flex-direction: column;
+    // align-items: center;  //
+    flex-direction: column; //
     border-bottom: .0625rem solid rgb(207, 203, 203);
     text-align: center;
-    // max-height: 10%;
-    // height: 8%;
-    height: clamp(38px, 18px + 1.5rem, 86px);
+    // height: clamp(38px, 18px + 1.5rem, 86px);
+    // height: auto;
 
     .options {
-        flex: 1;
+        // flex: 1;
         display: flex;
         align-items: center;
+        height: clamp(38px, 18px + 1.5rem, 86px);//
 
         li {
 
@@ -148,10 +149,11 @@ const images = ref(['https://fastly.jsdelivr.net/npm/@vant/assets/apple-1.jpeg',
     }
 }
 
-.list {
-    height: auto;
-    overflow-y: auto;
-}
+// .list {
+//    flex: 1; 
+// height: auto;
+// overflow-y: auto;
+// }
 </style>
 <style lang="scss">
 .fade-enter-active,

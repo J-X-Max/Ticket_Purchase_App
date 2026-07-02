@@ -1,35 +1,35 @@
 <template>
 
-    <div v-if="cityStore.isReady">
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-            <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-                class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载">
-                <router-link :to="'/detail/' + item.filmId" v-for="item, index in list" :key="item.filmId"
-                    class="film-link">
-                    <van-card :thumb="item.poster">
-                        <template #title>
-                            <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
-                            }}</button></div>
-                        </template>
+    <!-- <div class="list"> -->
+    <van-pull-refresh v-if="cityStore.isReady" v-model="refreshing" @refresh="onRefresh" >
+        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+            class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载" >
+            <router-link custom v-slot="{ navigate }" :to="'/detail/' + item.filmId" v-for="item, index in list"
+                :key="item.filmId">
+                <van-card :thumb="item.poster" @click="navigate">
+                    <template #title>
+                        <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+                                }}</button></div>
+                    </template>
 
-                        <template #desc>
-                            <div class="actor-style"><span>主演: {{item.actors.map(a => a.name).join(' ')}}</span></div>
-                            <div class="time-style"><span>上映日期:{{ film_date[index] }}</span></div>
-                        </template>
-                        <template #footer>
-                            <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">预购</van-button>
-                        </template>
-                    </van-card>
-                </router-link>
-            </van-list>
-        </van-pull-refresh>
-    </div>
+                    <template #desc>
+                        <div class="actor-style"><span>主演: {{item.actors.map(a => a.name).join(' ')}}</span></div>
+                        <div class="time-style"><span>上映日期:{{ film_date[index] }}</span></div>
+                    </template>
+                    <template #footer>
+                        <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">预购</van-button>
+                    </template>
+                </van-card>
+            </router-link>
+        </van-list>
+    </van-pull-refresh>
+    <!-- </div> -->
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
 import { http } from '@/util/tools'
 import { useRouter } from 'vue-router'
-import { ref, computed, onBeforeMount } from 'vue'
+import { ref, computed, onBeforeMount} from 'vue'
 import { Card as vanCard, List as vanList, Button as vanButton, PullRefresh as vanPullRefresh } from 'vant'
 
 import type { Items } from '@/types'
@@ -129,25 +129,18 @@ const film_date = computed(() => {
 onBeforeMount(async () => {
     await cityStore.ensureCityReady()
 })
+
 </script>
 
 
 <style scoped lang="scss">
-.film-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
-
 .van-pull-refresh {
-    overflow: auto;
-
+    height:fit-content;
+  overflow:visible;
     .list-container {
         padding: 1vh 1.5vw 0vw;
-
         .van-card {
             font-size: 1rem;
-            // height: 17vh;
             padding-left: .5625rem;
             display: flex;
             border-bottom: 1px solid #e8e8e8;
@@ -163,7 +156,7 @@ onBeforeMount(async () => {
                 flex-basis: auto;
 
                 .van-card__thumb {
-                    width: clamp(40px,1px + 3rem, 140px);
+                    width: clamp(40px, 1px + 3rem, 140px);
                     height: 100%;
                     // margin-right: .625rem;
                 }
@@ -180,6 +173,7 @@ onBeforeMount(async () => {
                         flex-direction: column;
                         align-items: stretch;
                         row-gap: 4px;
+
                         div {
                             flex: 1;
                             display: flex;
@@ -192,12 +186,6 @@ onBeforeMount(async () => {
                 }
 
                 .van-card__title {
-                    // white-space: nowrap;
-                    // line-height: 1;
-                    // margin-top: 0.2rem;
-                    // display: flex;
-                    // align-items: center;
-                    // margin-bottom: 0.475rem;
                     font-size: .9rem;
                     max-height: none;
                     // font-size: ;
@@ -212,31 +200,12 @@ onBeforeMount(async () => {
                         background-color: #d2d6dc;
                         border-radius: .25rem;
                         margin-left: .1875rem;
-                        border-width: 0.15rem;
+                        border-width: 0.05rem;
                     }
                 }
 
-                // .audience-rating {
-                //     // font-size: 1rem;
-                //     // display: flex;
-                //     // align-items: center;
-                //     // line-height: 1.2;
-
-                //     .grade {
-                //         color: rgb(255, 150, 112);
-                //         font-weight: 600;
-                //         font-size: 0.7rem;
-                //         margin-left: 0.1875rem;
-
-                //     }
-                // }
 
                 .actor-style {
-
-                    // font-size: 1rem;
-                    // white-space: nowrap;
-                    // overflow: hidden;
-                    // text-overflow: ellipsis;
                     span {
                         white-space: nowrap;
                         overflow: hidden;
@@ -252,11 +221,6 @@ onBeforeMount(async () => {
                         text-overflow: ellipsis;
 
                     }
-
-                    // font-size: 1rem;
-                    // white-space: nowrap;
-                    // overflow: hidden;
-                    // text-overflow: ellipsis;
                 }
             }
         }
@@ -275,7 +239,7 @@ onBeforeMount(async () => {
             }
 
             .shopping {
-                border: 0.1875rem solid orange;
+                border: 1px solid orange;
                 color: orange;
                 font-size: 1rem;
                 width: 3.175rem;
@@ -286,4 +250,6 @@ onBeforeMount(async () => {
 
     }
 }
+
+// }
 </style>

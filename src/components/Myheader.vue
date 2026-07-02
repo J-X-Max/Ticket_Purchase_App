@@ -10,7 +10,7 @@
                     </div>
                 </template>
                 <template #right>
-                    <van-icon v-if="showSearch" name="search" color="black"  />
+                    <van-icon v-if="showSearch" name="search" color="black" />
                     <span class="time" v-else-if="Time.showTime">{{ formattedTime }}</span>
                     <span v-else-if="text">{{ text }}</span>
                     <van-icon v-else-if="showWarning" name="warning-o" />
@@ -59,7 +59,7 @@ const props = defineProps({
         default: false
     }
 })
-const emit = defineEmits(['back', 'showBackPopup', 'Timeout', 'save','showBackUser','goToWarning'])
+const emit = defineEmits(['back', 'showBackPopup', 'Timeout', 'save', 'showBackUser', 'goToWarning'])
 // 点击城市，跳转到城市选择页
 
 // 点击搜索，跳转到搜索页面（可根据需要调整路径）
@@ -87,7 +87,7 @@ const handleLeftClick = () => {
             emit('showBackPopup')
             return
         }
-        if(props.text){
+        if (props.text) {
             emit('showBackUser')
             return
         }
@@ -95,7 +95,7 @@ const handleLeftClick = () => {
 
     } else if (props.preventDefaultBack && props.leftType === 'city') {
         router.push('/city')
-    }else {
+    } else {
         emit('back')
     }
 }
@@ -176,7 +176,7 @@ onUnmounted(() => {
     top: 0;
     z-index: 100;
     background-color: white;
-    height: 7vh;
+    height: 6vh;
     line-height: 1;
     display: flex;
     align-items: center;
@@ -185,6 +185,22 @@ onUnmounted(() => {
     :deep(.van-nav-bar__content) {
         width: 100%;
         height: 100%;
+
+        .van-nav-bar__left {
+            width: 30%;
+            div {
+                text-align: left;
+                flex: 1;
+                span {
+                    font-size: .9rem;
+                    text-wrap: nowrap;
+                    width: 40%;
+                    overflow-x: clip;
+                    text-overflow: ellipsis;
+                }
+            }
+
+        }
 
         .van-nav-bar__title {
             font-size: $font-size-md;

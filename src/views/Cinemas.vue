@@ -65,23 +65,23 @@ onBeforeMount(async () => {
     top: 0;
     z-index: 100;
 
-    :deep(.van-nav-bar__left) {
-        width: 30%;
+    // :deep(.van-nav-bar__left) {
+    //     width: 30%;
 
-        div {
-            text-align: left;
-            flex: 1;
+    //     div {
+    //         text-align: left;
+    //         flex: 1;
 
-            span {
-                font-size: .9rem;
-                text-wrap: nowrap;
-                width: 40%;
-                overflow-x: hidden;
-                text-overflow: ellipsis;
-            }
-        }
+    //         span {
+    //             font-size: .9rem;
+    //             text-wrap: nowrap;
+    //             width: 40%;
+    //             overflow-x:clip;
+    //             text-overflow: ellipsis;
+    //         }
+    //     }
 
-    }
+    // }
 }
 
 :deep(.van-dropdown-menu) {
@@ -107,7 +107,7 @@ onBeforeMount(async () => {
 }
 
 .list-wrapper {
-    height: 80vh;
+    height:fit-content;
     overflow-y: auto;
 
     :deep(.van-cell) {
@@ -155,3 +155,12 @@ onBeforeMount(async () => {
     }
 }
 </style>
+<!-- position: sticky;
+    top: 0;
+    z-index: 100;
+    background-color: white;
+    height: 6vh;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center; -->

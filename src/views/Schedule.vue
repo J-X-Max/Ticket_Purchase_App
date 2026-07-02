@@ -896,7 +896,7 @@ onBeforeUnmount(() => {
     display: flex;
     // border: 1px solid red;
     position: relative;
-
+    --cell-size: 1.5rem;
     // transform-origin: center;
     /* 原点设为左上角，配合偏移计算 */
     // transform: translate(v-bind('offsetX + "px"'), v-bind('offsetY + "px"')) scale(v-bind('mapScale'));
@@ -939,7 +939,6 @@ onBeforeUnmount(() => {
       }
     }
 
-    --cell-size: 1.5rem;
 
     .map {
       display: grid;

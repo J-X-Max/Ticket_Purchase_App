@@ -1,32 +1,32 @@
 <template>
-    <div v-if="cityStore.isReady">
-        <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
-            <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
-                class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载">
-                <router-link custom v-slot="{ navigate }" :to="'/detail/' + item.filmId" v-for="item in list"
-                    :key="item.filmId" class="film-link">
-                    <van-card :thumb="item.poster" @click="navigate">
-                        <template #title>
-                            <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
-                                    }}</button></div>
-                        </template>
+    <!-- <div> -->
+    <van-pull-refresh v-if="cityStore.isReady" v-model="refreshing" @refresh="onRefresh">
+        <van-list v-model:loading="loading" :finished="finished" finished-text="没有更多了" @load="onLoad"
+            class="list-container " offset="10" v-model:error="error" error-text="请求失败，点击重新加载">
+            <router-link custom v-slot="{ navigate }" :to="'/detail/' + item.filmId" v-for="item in list"
+                :key="item.filmId">
+                <van-card :thumb="item.poster" @click="navigate">
+                    <template #title>
+                        <div class="van-card__title">{{ item.name }} <button class="button-style"> {{ item.item.name
+                        }}</button></div>
+                    </template>
 
-                        <template #desc>
-                            <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
-                            <div class="actor-style"><span>主演: {{item.actors?.map(a => a.name).join(' ') ??
-                                '暂无'}}</span></div>
-                            <div class="time-style"><span>{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : ""
-                                    }}</span>
-                            </div>
-                        </template>
-                        <template #footer>
-                            <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
-                        </template>
-                    </van-card>
-                </router-link>
-            </van-list>
-        </van-pull-refresh>
-    </div>
+                    <template #desc>
+                        <div class="audience-rating"> 观众评分 <span class="grade">{{ item.grade }} </span> </div>
+                        <div class="actor-style"><span>主演: {{item.actors?.map(a => a.name).join(' ') ??
+                            '暂无'}}</span></div>
+                        <div class="time-style"><span>{{ item.nation }}|{{ item.runtime ? item.runtime + "分钟" : ""
+                        }}</span>
+                        </div>
+                    </template>
+                    <template #footer>
+                        <van-button class="shopping" @click.stop.prevent="handleBuy(item.filmId)">购票</van-button>
+                    </template>
+                </van-card>
+            </router-link>
+        </van-list>
+    </van-pull-refresh>
+    <!-- </div> -->
 </template>
 <script setup lang="ts">
 import useCityStore from '@/store/cityStore'
@@ -151,21 +151,15 @@ tabbarStore.change(true)
 
 
 <style scoped lang="scss">
-.film-link {
-    text-decoration: none;
-    color: inherit;
-    display: block;
-}
 
 .van-pull-refresh {
-    overflow: auto;
 
+    height:fit-content;
+  overflow:visible;
     .list-container {
         padding: 1vh 1.5vw 0vw;
-
         .van-card {
             font-size: 1rem;
-            // height: 17vh;
             padding-left: .5625rem;
             display: flex;
             border-bottom: 1px solid #e8e8e8;
@@ -182,7 +176,7 @@ tabbarStore.change(true)
 
                 .van-card__thumb {
                     height: 100%;
-                    width: clamp(40px,1px + 3rem, 140px);
+                    width: clamp(40px, 1px + 3rem, 140px);
                     // margin-right: .625rem;
                 }
 
@@ -225,7 +219,7 @@ tabbarStore.change(true)
                         background-color: #d2d6dc;
                         border-radius: .25rem;
                         margin-left: .1875rem;
-                        border-width: 0.15rem;
+                        border-width: 0.05rem;
                     }
                 }
 
@@ -241,10 +235,6 @@ tabbarStore.change(true)
 
                 .actor-style {
 
-                    // font-size: .9rem;
-                    // min-width: 2px;
-                    // max-width: 100%;  
-                    // width: 100%;
                     span {
                         white-space: nowrap;
                         overflow: hidden;
@@ -264,6 +254,8 @@ tabbarStore.change(true)
             }
         }
 
+        // }
+
 
         :deep(.van-card__footer) {
             display: flex;
@@ -278,7 +270,7 @@ tabbarStore.change(true)
             }
 
             .shopping {
-                border: 0.1875rem solid orange;
+                border: 1px solid orange;
                 color: orange;
                 font-size: 1rem;
                 width: 3.175rem;
@@ -287,11 +279,7 @@ tabbarStore.change(true)
             }
         }
 
-        /*  .list-content {
-        display: grid;
-        grid-template-columns: auto;
-        grid-template-rows: repeat(3, 100px);
-    } */
     }
 }
+
 </style>
